@@ -22,7 +22,8 @@ export default function PixelButton({
   className = '',
   onClick,
 }: Props) {
-  const cls = `pixel-btn pixel-btn-${variant} ${className}`
+  // Full width on phones, natural width from the sm breakpoint up.
+  const cls = `pixel-btn pixel-btn-${variant} w-full sm:w-auto ${className}`
 
   if (to) {
     return (

@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 import ScrollManager from './components/ScrollManager'
+import SoundSystem from './components/SoundSystem'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import ProjectDetail from './pages/ProjectDetail'
@@ -25,6 +26,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <SoundSystem />
       <div className="scanlines" aria-hidden="true" />
     </div>
   )
