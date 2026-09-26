@@ -43,7 +43,7 @@ export default function Hero() {
             <span className="text-primary">{profile.lastName}</span>
           </h1>
 
-          <p className="mt-6 min-h-[1.5em] font-pixel text-[11px] leading-relaxed text-text sm:text-sm">
+          <p className="mt-6 min-h-[1.5em] font-display text-xl leading-snug font-semibold text-text sm:text-2xl">
             <span className="sr-only">{profile.title}</span>
             <span aria-hidden="true">
               &gt; {typed}
@@ -69,8 +69,8 @@ export default function Hero() {
             {profile.stats.map((s) => (
               <div key={s.label} className="bg-surface p-3 shadow-[inset_0_0_0_2px_var(--color-line)] sm:p-4">
                 <dt className="sr-only">{s.label}</dt>
-                <dd className="font-pixel text-lg text-primary sm:text-2xl">{s.value}</dd>
-                <dd className="mt-2 font-label text-[10px] leading-snug tracking-wide text-muted uppercase sm:text-xs">
+                <dd className="font-display text-3xl font-bold text-primary sm:text-4xl">{s.value}</dd>
+                <dd className="mt-2 font-label text-xs leading-snug tracking-wide text-muted uppercase sm:text-xs">
                   {s.label}
                 </dd>
               </div>
@@ -103,7 +103,7 @@ export default function Hero() {
           </div>
           <span
             aria-hidden="true"
-            className="absolute -top-5 -left-5 hidden animate-float font-pixel text-2xl text-primary md:block"
+            className="absolute -top-5 -left-5 hidden animate-float font-display text-2xl text-primary md:block"
           >
             ✦
           </span>

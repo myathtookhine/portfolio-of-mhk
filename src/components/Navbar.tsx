@@ -65,7 +65,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Main">
         <Link to="/" onClick={close} className="group flex items-center gap-3" aria-label={`${profile.name}, home`}>
-          <span className="pixel-corners grid h-9 w-9 place-items-center bg-primary font-pixel text-[10px] text-bg">
+          <span className="pixel-corners grid h-9 w-9 place-items-center bg-primary font-display text-sm font-bold text-bg">
             MHK
           </span>
           <span className="hidden font-label text-sm tracking-widest text-text uppercase group-hover:text-primary sm:inline">
@@ -109,7 +109,7 @@ export default function Navbar() {
                 <Link
                   to={{ pathname: '/', hash: id }}
                   onClick={close}
-                  className="flex items-center gap-4 px-2 py-3 font-pixel text-sm text-text hover:bg-surface hover:text-primary"
+                  className="flex items-center gap-4 px-2 py-3 font-display text-lg font-semibold text-text hover:bg-surface hover:text-primary"
                 >
                   <span className="text-primary">0{i + 1}</span>
                   {label}

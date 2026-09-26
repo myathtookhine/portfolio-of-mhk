@@ -11,7 +11,7 @@ export default function Vision() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           {profile.vision.map((v, i) => (
             <div key={i} className="flex gap-5">
-              <span className="font-pixel text-2xl text-primary sm:text-3xl">0{i + 1}.</span>
+              <span className="font-display text-3xl font-bold text-primary sm:text-4xl">0{i + 1}.</span>
               <p className="text-text/90 md:text-base">{v}</p>
             </div>
           ))}
@@ -24,7 +24,7 @@ export default function Vision() {
           {profile.mission.map((m, i) => (
             <li key={m.title}>
               <PixelCard className="flex flex-col p-6">
-                <span className="font-pixel text-xs text-primary">Mission 0{i + 1}</span>
+                <span className="font-display text-sm font-semibold text-primary">Mission 0{i + 1}</span>
                 <h4 className="mt-4 font-label text-base tracking-wide text-text uppercase">{m.title}</h4>
                 <p className="mt-3 text-sm leading-7 text-muted">{m.text}</p>
               </PixelCard>

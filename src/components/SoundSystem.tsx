@@ -10,22 +10,24 @@ const LOOP_VOLUME = 0.5
 
 const soundUrl = (file: string) => `${import.meta.env.BASE_URL}sounds/${file}`
 
-type Phase = 'loading' | 'await' | 'intro' | 'ready'
+type Phase = 'loading' | 'leaving' | 'ready'
 
 /**
- * First-load sequence: loader (2s) → PRESS START → intro sound → 2s later the
- * looping background music starts and the play/pause button appears.
- *
- * Browsers only allow sound after the visitor interacts with the page, so the
- * sequence starts from the PRESS START click rather than automatically.
+ * Loader (2s), then the portfolio shows right away. Sound is opt-in: the
+ * "Sound on?" bubble or the music button plays the intro, then the looping
+ * background music 2s later. Browsers only allow sound after a click, and it
+ * keeps recruiters from being surprised by audio.
  */
 export default function SoundSystem() {
   const [phase, setPhase] = useState<Phase>('loading')
   const [playing, setPlaying] = useState(false)
+  const [showPrompt, setShowPrompt] = useState(true)
   const introRef = useRef<HTMLAudioElement | null>(null)
   const loopRef = useRef<HTMLAudioElement | null>(null)
+  /** Pending start of the loop while the intro plays. */
   const loopTimerRef = useRef<number | undefined>(undefined)
-  // True while the loop is being briefly started and stopped to unlock it (see start()).
+  const startedRef = useRef(false)
+  // True while the loop is briefly started and stopped to unlock it (see startSequence).
   const primingRef = useRef(false)
 
   useEffect(() => {
@@ -39,14 +41,21 @@ export default function SoundSystem() {
     introRef.current = intro
     loopRef.current = loop
 
-    // Keep the button in sync with the audio element's real state.
+    // Keep the button in sync with the loop's real state. The unlock's own
+    // play/pause pair is ignored; its pause event ends the unlock.
     const onPlay = () => !primingRef.current && setPlaying(true)
-    const onPause = () => !primingRef.current && setPlaying(false)
+    const onPause = () => {
+      if (primingRef.current) {
+        primingRef.current = false
+        return
+      }
+      setPlaying(false)
+    }
     loop.addEventListener('play', onPlay)
     loop.addEventListener('pause', onPause)
 
-    // Only advance if the visitor hasn't already skipped past the loader.
-    const loadTimer = window.setTimeout(() => setPhase((p) => (p === 'loading' ? 'await' : p)), LOADING_MS)
+    // Only advance if Esc hasn't already closed the loader.
+    const loadTimer = window.setTimeout(() => setPhase((p) => (p === 'loading' ? 'leaving' : p)), LOADING_MS)
 
     return () => {
       window.clearTimeout(loadTimer)
@@ -60,11 +69,14 @@ export default function SoundSystem() {
     }
   }, [])
 
-  // Runs inside the PRESS START click, which is the user gesture browsers require.
-  const start = useCallback(() => {
+  // Must run inside a click: that's the user gesture browsers require for sound.
+  const startSequence = useCallback(() => {
     const intro = introRef.current
     const loop = loopRef.current
     if (!intro || !loop) return
+    startedRef.current = true
+    setShowPrompt(false)
+    setPlaying(true)
 
     intro.play().catch(() => {})
 
@@ -79,40 +91,57 @@ export default function SoundSystem() {
         loop.pause()
         loop.currentTime = 0
       })
-      .catch(() => {})
-      .finally(() => {
-        loop.muted = false
+      // Rejected: no pause event will come, so end the unlock here.
+      .catch(() => {
         primingRef.current = false
       })
+      .finally(() => {
+        loop.muted = false
+      })
 
-    setPhase('intro')
     loopTimerRef.current = window.setTimeout(() => {
-      setPhase('ready')
-      loop.play().catch(() => {})
+      loopTimerRef.current = undefined
+      loop.play().catch(() => setPlaying(false))
     }, LOOP_DELAY_MS)
   }, [])
 
-  const skip = useCallback(() => setPhase('ready'), [])
-
   const toggle = useCallback(() => {
+    const intro = introRef.current
     const loop = loopRef.current
-    if (!loop) return
+    if (!intro || !loop) return
+    if (!startedRef.current) return startSequence()
+
+    // Still in the intro: turn sound off before the loop begins.
+    if (loopTimerRef.current !== undefined) {
+      window.clearTimeout(loopTimerRef.current)
+      loopTimerRef.current = undefined
+      intro.pause()
+      setPlaying(false)
+      return
+    }
+
     // pause() keeps currentTime, so play() resumes where the music stopped.
     if (loop.paused) loop.play().catch(() => {})
     else loop.pause()
-  }, [])
+  }, [startSequence])
+
+  const dismissPrompt = useCallback(() => setShowPrompt(false), [])
+  const finishLoading = useCallback(() => setPhase('ready'), [])
 
   return (
     <>
       {phase !== 'ready' && (
-        <LoadingScreen
-          stage={phase === 'loading' ? 'loading' : phase === 'await' ? 'await' : 'leaving'}
-          durationMs={LOADING_MS}
-          onStart={start}
-          onSkip={skip}
+        <LoadingScreen leaving={phase === 'leaving'} durationMs={LOADING_MS} onDone={finishLoading} />
+      )}
+      {phase === 'ready' && (
+        <MusicButton
+          playing={playing}
+          onToggle={toggle}
+          showPrompt={showPrompt}
+          onPromptAccept={startSequence}
+          onPromptDismiss={dismissPrompt}
         />
       )}
-      {phase === 'ready' && <MusicButton playing={playing} onToggle={toggle} />}
     </>
   )
 }

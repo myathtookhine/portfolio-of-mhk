@@ -16,11 +16,11 @@ export default function Experience() {
               />
               <div className="grid grid-cols-1 gap-4 md:grid-cols-[220px_1fr] md:gap-10">
                 <div>
-                  <p className="font-pixel text-[11px] text-primary">{job.period}</p>
+                  <p className="font-display text-sm font-semibold text-primary">{job.period}</p>
                   <p className="mt-3 font-label text-xs tracking-wider text-muted uppercase">{job.company}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm text-text sm:text-base">{job.role}</h3>
+                  <h3 className="text-xl text-text sm:text-2xl">{job.role}</h3>
                   <ul className="mt-5 space-y-3">
                     {job.points.map((p) => (
                       <li key={p} className="flex gap-3 text-text/85">

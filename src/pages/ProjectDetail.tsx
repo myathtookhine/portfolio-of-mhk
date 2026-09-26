@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import ImagePlaceholder from '../components/ImagePlaceholder'
+import ImageViewer from '../components/ImageViewer'
 import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
 import PixelIcon from '../components/PixelIcon'
 import Tag from '../components/Tag'
+import ZoomableImage from '../components/ZoomableImage'
 import { caseStudies } from '../data/projects'
 import { profile } from '../data/profile'
 import NotFound from './NotFound'
@@ -11,12 +13,15 @@ import NotFound from './NotFound'
 export default function ProjectDetail() {
   const { slug } = useParams()
   const index = caseStudies.findIndex((p) => p.slug === slug)
+  // Open image in the viewer: 0 = cover, 1… = screens.
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
   if (index === -1) return <NotFound />
 
   const project = caseStudies[index]
   const prev = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length]
   const next = caseStudies[(index + 1) % caseStudies.length]
+  const viewerImages = [project.cover, ...project.images]
 
   return (
     <article className="pt-24 pb-20 md:pt-32">
@@ -34,7 +39,7 @@ export default function ProjectDetail() {
           <p className="font-label text-sm tracking-widest text-primary uppercase">
             &gt; Level {String(index + 1).padStart(2, '0')} · {project.category}
           </p>
-          <h1 className="mt-4 text-[clamp(1.25rem,4vw,2.5rem)] leading-snug text-text">{project.title}</h1>
+          <h1 className="mt-4 text-[clamp(2.1rem,5.5vw,3.5rem)] leading-tight text-text">{project.title}</h1>
           <p className="mt-6 max-w-3xl text-base leading-8 text-text/85 md:text-lg">{project.summary}</p>
           {project.links.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-5">
@@ -48,7 +53,13 @@ export default function ProjectDetail() {
         </header>
 
         <div className="mt-12">
-          <ImagePlaceholder src={project.cover.src} alt={project.cover.alt} natural loading="eager" />
+          <ZoomableImage
+            src={project.cover.src}
+            alt={project.cover.alt}
+            natural
+            loading="eager"
+            onOpen={() => setViewerIndex(0)}
+          />
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] lg:gap-16">
@@ -119,7 +130,7 @@ export default function ProjectDetail() {
             {project.images.map((img, i) => (
               <li key={img.src}>
                 <figure>
-                  <ImagePlaceholder src={img.src} alt={img.alt} natural />
+                  <ZoomableImage src={img.src} alt={img.alt} natural onOpen={() => setViewerIndex(i + 1)} />
                   <figcaption className="mt-3 flex gap-3 text-sm text-muted">
                     <span className="font-label tracking-widest text-primary">0{i + 1}</span>
                     {img.alt}
@@ -139,7 +150,7 @@ export default function ProjectDetail() {
               <span className="flex items-center gap-2 font-label text-xs tracking-widest text-muted uppercase">
                 <PixelIcon name="arrowLeft" size={10} /> Previous level
               </span>
-              <span className="mt-3 block font-pixel text-xs leading-relaxed text-text group-hover:text-primary sm:text-sm">
+              <span className="mt-3 block font-display text-xl leading-snug font-semibold text-text group-hover:text-primary sm:text-2xl">
                 {prev.title}
               </span>
             </Link>
@@ -150,12 +161,19 @@ export default function ProjectDetail() {
             <span className="flex items-center gap-2 font-label text-xs tracking-widest text-muted uppercase sm:justify-end">
               Next level <PixelIcon name="arrowRight" size={10} />
             </span>
-            <span className="mt-3 block font-pixel text-xs leading-relaxed text-text group-hover:text-primary sm:text-sm">
+            <span className="mt-3 block font-display text-xl leading-snug font-semibold text-text group-hover:text-primary sm:text-2xl">
               {next.title}
             </span>
           </Link>
         </nav>
       </div>
+
+      <ImageViewer
+        images={viewerImages}
+        index={viewerIndex}
+        onIndexChange={setViewerIndex}
+        onClose={() => setViewerIndex(null)}
+      />
     </article>
   )
 }

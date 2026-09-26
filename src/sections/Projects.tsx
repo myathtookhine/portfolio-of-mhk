@@ -18,7 +18,7 @@ function FeaturedCard({ project, index }: { project: CaseStudy; index: number })
             <Tag tone="primary">{`★ Featured 0${index + 1}`}</Tag>
             <span className="font-label text-xs tracking-wider text-muted uppercase">{project.category}</span>
           </div>
-          <h3 className="mt-5 text-base text-text group-hover/card:text-primary sm:text-lg">{project.title}</h3>
+          <h3 className="mt-5 text-2xl text-text group-hover/card:text-primary sm:text-3xl">{project.title}</h3>
           <p className="mt-4 flex-1 text-text/80">{project.summary}</p>
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap gap-2">
@@ -26,7 +26,7 @@ function FeaturedCard({ project, index }: { project: CaseStudy; index: number })
                 <Tag key={p}>{p}</Tag>
               ))}
             </div>
-            <span className="flex items-center gap-2 font-pixel text-[10px] text-primary">
+            <span className="flex items-center gap-2 font-display text-sm font-semibold text-primary">
               View <PixelIcon name="arrowRight" size={12} />
             </span>
           </div>
@@ -52,7 +52,7 @@ function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () =>
       />
       <div className="flex flex-1 flex-col px-1 pt-5 pb-1">
         <span className="font-label text-xs tracking-wider text-primary uppercase">{project.category}</span>
-        <h3 className="mt-3 text-xs leading-relaxed text-text group-hover/card:text-primary sm:text-sm">
+        <h3 className="mt-3 text-xl leading-snug text-text group-hover/card:text-primary">
           {/* The ::after stretches this button over the whole card, so any click on the card opens the modal. */}
           <button
             type="button"
@@ -65,7 +65,7 @@ function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () =>
         </h3>
         <p className="mt-3 flex-1 text-sm leading-7 text-muted">{project.summary}</p>
         <div className="mt-5 flex flex-wrap items-center gap-5">
-          <span aria-hidden="true" className="flex items-center gap-2 font-pixel text-[10px] text-text group-hover/card:text-primary">
+          <span aria-hidden="true" className="flex items-center gap-2 font-display text-sm font-semibold text-text group-hover/card:text-primary">
             Details <PixelIcon name="arrowRight" size={10} />
           </span>
           {project.links.map((l) => (
@@ -75,7 +75,7 @@ function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () =>
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="relative z-10 flex items-center gap-2 font-pixel text-[10px] text-muted hover:text-primary"
+              className="relative z-10 flex items-center gap-2 font-display text-sm font-semibold text-muted hover:text-primary"
             >
               {l.label} <PixelIcon name="external" size={10} />
             </a>
