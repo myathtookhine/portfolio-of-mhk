@@ -4,19 +4,19 @@ import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
 import PixelIcon from '../components/PixelIcon'
 import Tag from '../components/Tag'
-import { projects } from '../data/projects'
+import { caseStudies } from '../data/projects'
 import { profile } from '../data/profile'
 import NotFound from './NotFound'
 
 export default function ProjectDetail() {
   const { slug } = useParams()
-  const index = projects.findIndex((p) => p.slug === slug)
+  const index = caseStudies.findIndex((p) => p.slug === slug)
 
   if (index === -1) return <NotFound />
 
-  const project = projects[index]
-  const prev = projects[(index - 1 + projects.length) % projects.length]
-  const next = projects[(index + 1) % projects.length]
+  const project = caseStudies[index]
+  const prev = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length]
+  const next = caseStudies[(index + 1) % caseStudies.length]
 
   return (
     <article className="pt-24 pb-20 md:pt-32">
@@ -36,10 +36,19 @@ export default function ProjectDetail() {
           </p>
           <h1 className="mt-4 text-[clamp(1.25rem,4vw,2.5rem)] leading-snug text-text">{project.title}</h1>
           <p className="mt-6 max-w-3xl text-base leading-8 text-text/85 md:text-lg">{project.summary}</p>
+          {project.links.length > 0 && (
+            <div className="mt-8 flex flex-wrap gap-5">
+              {project.links.map((l) => (
+                <PixelButton key={l.href} href={l.href} external>
+                  {l.label} <PixelIcon name="external" size={12} />
+                </PixelButton>
+              ))}
+            </div>
+          )}
         </header>
 
         <div className="mt-12">
-          <ImagePlaceholder src={project.cover} alt={`${project.title} cover`} ratio="16 / 8" label="Cover · 16:8" />
+          <ImagePlaceholder src={project.cover.src} alt={project.cover.alt} natural loading="eager" />
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] lg:gap-16">
@@ -96,15 +105,6 @@ export default function ProjectDetail() {
                   ))}
                 </div>
               </div>
-              {project.links.length > 0 && (
-                <div className="flex flex-col gap-4 pt-2">
-                  {project.links.map((l) => (
-                    <PixelButton key={l.href} href={l.href} external>
-                      {l.label} <PixelIcon name="external" size={12} />
-                    </PixelButton>
-                  ))}
-                </div>
-              )}
             </PixelCard>
           </aside>
         </div>
@@ -113,31 +113,39 @@ export default function ProjectDetail() {
           <h2 id="gallery-title" className="font-label text-lg tracking-widest text-text uppercase">
             <span className="text-primary">■</span> Screens
           </h2>
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {project.images.map((src, i) => (
-              <ImagePlaceholder
-                key={i}
-                src={src || undefined}
-                alt={`${project.title} screen ${i + 1}`}
-                ratio="4 / 3"
-                label={`Screen 0${i + 1}`}
-              />
+          <ul
+            className={`mt-8 grid grid-cols-1 gap-8 ${project.galleryColumns === 1 ? '' : 'md:grid-cols-2'}`}
+          >
+            {project.images.map((img, i) => (
+              <li key={img.src}>
+                <figure>
+                  <ImagePlaceholder src={img.src} alt={img.alt} natural />
+                  <figcaption className="mt-3 flex gap-3 text-sm text-muted">
+                    <span className="font-label tracking-widest text-primary">0{i + 1}</span>
+                    {img.alt}
+                  </figcaption>
+                </figure>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
 
         <nav
           className="mt-24 grid grid-cols-1 gap-6 border-t-[3px] border-dashed border-line pt-10 sm:grid-cols-2"
           aria-label="More projects"
         >
-          <Link to={`/projects/${prev.slug}`} className="group block">
-            <span className="flex items-center gap-2 font-label text-xs tracking-widest text-muted uppercase">
-              <PixelIcon name="arrowLeft" size={10} /> Previous level
-            </span>
-            <span className="mt-3 block font-pixel text-xs leading-relaxed text-text group-hover:text-primary sm:text-sm">
-              {prev.title}
-            </span>
-          </Link>
+          {prev.slug !== next.slug ? (
+            <Link to={`/projects/${prev.slug}`} className="group block">
+              <span className="flex items-center gap-2 font-label text-xs tracking-widest text-muted uppercase">
+                <PixelIcon name="arrowLeft" size={10} /> Previous level
+              </span>
+              <span className="mt-3 block font-pixel text-xs leading-relaxed text-text group-hover:text-primary sm:text-sm">
+                {prev.title}
+              </span>
+            </Link>
+          ) : (
+            <span aria-hidden="true" />
+          )}
           <Link to={`/projects/${next.slug}`} className="group block sm:text-right">
             <span className="flex items-center gap-2 font-label text-xs tracking-widest text-muted uppercase sm:justify-end">
               Next level <PixelIcon name="arrowRight" size={10} />

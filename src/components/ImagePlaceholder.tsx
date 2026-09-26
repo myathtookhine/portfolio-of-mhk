@@ -8,17 +8,28 @@ type Props = {
   ratio?: string
   label?: string
   className?: string
+  /** Show a real image at its own aspect ratio instead of cropping it to `ratio`. */
+  natural?: boolean
+  loading?: 'lazy' | 'eager'
 }
 
-export default function ImagePlaceholder({ src, alt, ratio = '16 / 9', label, className = '' }: Props) {
+export default function ImagePlaceholder({
+  src,
+  alt,
+  ratio = '16 / 9',
+  label,
+  className = '',
+  natural,
+  loading = 'lazy',
+}: Props) {
   if (src) {
     return (
       <img
         src={src}
         alt={alt}
-        loading="lazy"
-        style={{ aspectRatio: ratio }}
-        className={`pixel-corners w-full object-cover ${className}`}
+        loading={loading}
+        style={natural ? undefined : { aspectRatio: ratio }}
+        className={`pixel-corners block h-auto w-full object-cover ${className}`}
       />
     )
   }

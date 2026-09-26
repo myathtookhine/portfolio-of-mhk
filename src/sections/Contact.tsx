@@ -24,10 +24,7 @@ export default function Contact() {
               Have a product that needs untangling, or a team that needs a hands-on design lead? I'd love to hear
               about it.
             </p>
-            <p className="mt-8 font-pixel text-xs text-primary">
-              Insert coin to continue<span className="animate-blink">_</span>
-            </p>
-            <div className="mt-8 flex flex-wrap gap-5">
+            <div className="mt-10 flex flex-wrap gap-5">
               <PixelButton href={`mailto:${contact.email}`}>
                 Say hello <PixelIcon name="mail" size={12} />
               </PixelButton>

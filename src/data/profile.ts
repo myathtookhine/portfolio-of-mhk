@@ -1,11 +1,12 @@
+import portrait from '../assets/portrait.webp'
+
 export const profile = {
   name: 'Myat Htoo Khaing',
   firstName: 'Myat Htoo',
   lastName: 'Khaing',
   title: 'Lead Product Designer',
   subtitle: 'UI/UX Designer & Frontend Developer',
-  // Replace with an imported image or a /public path once available.
-  portrait: undefined as string | undefined,
+  portrait,
   about:
     'UI/UX Designer with 9+ years of experience designing enterprise, logistics, POS, hotel management, and merchant solutions across web and mobile platforms. Specialized in transforming complex business requirements into intuitive user experiences through user-centered design, rapid prototyping, and scalable design systems.',
   stats: [
@@ -45,8 +46,8 @@ export const profile = {
     email: 'myathtookhine@gmail.com',
     phone: '+66 80 414 8062',
     phoneHref: 'tel:+66804148062',
-    linkedin: 'linkedin.com/in/myat-htoo-khine',
-    linkedinHref: 'https://www.linkedin.com/in/myat-htoo-khine',
+    linkedin: 'linkedin.com/in/myat-htoo-khaing-084242b3',
+    linkedinHref: 'https://www.linkedin.com/in/myat-htoo-khaing-084242b3',
   },
   cvUrl: '/cv/Myat-Htoo-Khaing-Resume.pdf',
 }

@@ -1,4 +1,5 @@
 import PixelCard from '../components/PixelCard'
+import PixelIcon from '../components/PixelIcon'
 import SectionTitle from '../components/SectionTitle'
 import Tag from '../components/Tag'
 import { education, skillGroups } from '../data/skills'
@@ -30,7 +31,20 @@ export default function Skills() {
                 <li key={e.title} className="flex gap-4">
                   <span aria-hidden="true" className="mt-2 h-2.5 w-2.5 shrink-0 bg-primary" />
                   <div>
-                    <p className="font-medium text-text">{e.title}</p>
+                    {e.url ? (
+                      <a
+                        href={e.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 font-medium text-text underline decoration-primary/60 decoration-2 underline-offset-4 hover:text-primary"
+                      >
+                        {e.title}
+                        <PixelIcon name="external" size={12} className="text-primary" />
+                        <span className="sr-only">(view certificate, opens in a new tab)</span>
+                      </a>
+                    ) : (
+                      <p className="font-medium text-text">{e.title}</p>
+                    )}
                     <p className="mt-1 font-label text-xs tracking-wider text-muted uppercase">
                       {e.place}
                       {e.note && <span className="text-primary"> · {e.note}</span>}

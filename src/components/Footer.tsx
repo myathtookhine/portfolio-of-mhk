@@ -1,4 +1,5 @@
 import { profile } from '../data/profile'
+import PixelIcon from './PixelIcon'
 
 export default function Footer() {
   return (
@@ -10,9 +11,19 @@ export default function Footer() {
         <p>
           Designed &amp; built with <span className="text-primary">■</span> React + Tailwind
         </p>
-        <a href="#top" className="hover:text-primary">
-          ▲ Back to top
-        </a>
+        <div className="flex items-center gap-6">
+          <a
+            href={profile.contact.linkedinHref}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 hover:text-primary"
+          >
+            <PixelIcon name="linkedin" size={12} /> LinkedIn
+          </a>
+          <a href="#top" className="hover:text-primary">
+            ▲ Back to top
+          </a>
+        </div>
       </div>
     </footer>
   )

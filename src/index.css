@@ -16,6 +16,14 @@
 
   --animate-blink: blink 1s steps(1) infinite;
   --animate-float: float 3s steps(4) infinite;
+  --animate-pop: pop 180ms steps(4) both;
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.94) translateY(12px);
+    }
+  }
 
   @keyframes blink {
     50% {

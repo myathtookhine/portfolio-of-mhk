@@ -89,7 +89,13 @@ export default function Hero() {
                 <span className="h-2.5 w-2.5 bg-line" />
               </span>
             </div>
-            <ImagePlaceholder src={profile.portrait} alt={`Portrait of ${profile.name}`} ratio="4 / 5" label="Portrait · 4:5" />
+            <ImagePlaceholder
+              src={profile.portrait}
+              alt={`Pixel-art portrait of ${profile.name}`}
+              ratio="4 / 5"
+              loading="eager"
+              className="pixel-grid-bg bg-surface-2"
+            />
             <div className="mt-3 flex items-center justify-between px-1 font-label text-xs tracking-widest uppercase">
               <span className="text-text">LVL 9+ Designer</span>
               <span className="text-primary">HP ■■■■■</span>
