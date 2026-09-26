@@ -6,7 +6,8 @@ import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    {/* Routes live under the Vite base path, e.g. /portfolio-of-mhk/projects/axtra-pos */}
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <App />
     </BrowserRouter>
   </StrictMode>,

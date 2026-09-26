@@ -49,5 +49,6 @@ export const profile = {
     linkedin: 'linkedin.com/in/myat-htoo-khaing-084242b3',
     linkedinHref: 'https://www.linkedin.com/in/myat-htoo-khaing-084242b3',
   },
-  cvUrl: '/cv/Myat-Htoo-Khaing-Resume.pdf',
+  // BASE_URL keeps this working under the GitHub Pages subpath.
+  cvUrl: `${import.meta.env.BASE_URL}cv/Myat-Htoo-Khaing-Resume.pdf`,
 }
