@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { profile } from '../data/profile'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
+import LanguageToggle from './LanguageToggle'
 import PixelIcon from './PixelIcon'
 
 const navItems = [
-  { id: 'projects', label: 'Projects' },
-  { id: 'about', label: 'About' },
-  { id: 'strengths', label: 'Strengths' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'projects', label: ui.nav.projects },
+  { id: 'about', label: ui.nav.about },
+  { id: 'strengths', label: ui.nav.strengths },
+  { id: 'experience', label: ui.nav.experience },
+  { id: 'skills', label: ui.nav.skills },
+  { id: 'contact', label: ui.nav.contact },
 ]
 
 function useActiveSection(enabled: boolean) {
@@ -36,6 +39,7 @@ function useActiveSection(enabled: boolean) {
 }
 
 export default function Navbar() {
+  const { t } = useLang()
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -73,7 +77,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        <ul className="hidden items-center gap-1 lg:ml-auto lg:flex">
           {navItems.map(({ id, label }) => (
             <li key={id}>
               <Link
@@ -83,22 +87,26 @@ export default function Navbar() {
                 }`}
               >
                 {active === id && <span aria-hidden="true">▸ </span>}
-                {label}
+                {t(label)}
               </Link>
             </li>
           ))}
         </ul>
 
-        <button
-          type="button"
-          className="grid h-10 w-10 place-items-center text-text hover:text-primary lg:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen((o) => !o)}
-        >
-          <PixelIcon name={open ? 'close' : 'menu'} size={22} />
-        </button>
+        {/* Language switch: always visible, next to the menu button on small screens */}
+        <div className="flex items-center gap-2 lg:ml-3">
+          <LanguageToggle />
+          <button
+            type="button"
+            className="grid h-10 w-10 place-items-center text-text hover:text-primary lg:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((o) => !o)}
+          >
+            <PixelIcon name={open ? 'close' : 'menu'} size={22} />
+          </button>
+        </div>
       </nav>
 
       {open && (
@@ -112,7 +120,7 @@ export default function Navbar() {
                   className="flex items-center gap-4 px-2 py-3 font-display text-lg font-semibold text-text hover:bg-surface hover:text-primary"
                 >
                   <span className="text-primary">0{i + 1}</span>
-                  {label}
+                  {t(label)}
                 </Link>
               </li>
             ))}

@@ -1,4 +1,6 @@
 import PixelIcon from './PixelIcon'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 type Props = {
   playing: boolean
@@ -10,6 +12,7 @@ type Props = {
 }
 
 export default function MusicButton({ playing, onToggle, showPrompt, onPromptAccept, onPromptDismiss }: Props) {
+  const { t } = useLang()
   const label = playing ? 'Pause background music' : 'Play background music'
 
   return (
@@ -26,7 +29,7 @@ export default function MusicButton({ playing, onToggle, showPrompt, onPromptAcc
               <span aria-hidden="true" className="text-primary">
                 ♪{' '}
               </span>
-              Sound on?
+              {t(ui.soundOn)}
             </button>
             <button
               type="button"

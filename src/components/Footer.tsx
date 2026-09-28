@@ -1,7 +1,10 @@
 import { profile } from '../data/profile'
 import PixelIcon from './PixelIcon'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 export default function Footer() {
+  const { t } = useLang()
   return (
     <footer className="border-t-[3px] border-line">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-8 text-center font-label text-xs tracking-widest text-muted uppercase sm:flex-row sm:px-6 sm:text-left">
@@ -21,7 +24,7 @@ export default function Footer() {
             <PixelIcon name="linkedin" size={12} /> LinkedIn
           </a>
           <a href="#top" className="hover:text-primary">
-            ▲ Back to top
+            ▲ {t(ui.backToTop)}
           </a>
         </div>
       </div>

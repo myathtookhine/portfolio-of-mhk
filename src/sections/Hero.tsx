@@ -4,6 +4,8 @@ import ImagePlaceholder from '../components/ImagePlaceholder'
 import PixelButton from '../components/PixelButton'
 import PixelIcon from '../components/PixelIcon'
 import { profile } from '../data/profile'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 function useTyped(text: string, speed = 70) {
   const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -27,6 +29,7 @@ function useTyped(text: string, speed = 70) {
 }
 
 export default function Hero() {
+  const { t } = useLang()
   const typed = useTyped(profile.title)
 
   return (
@@ -34,10 +37,16 @@ export default function Hero() {
       <HeroSnake />
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 sm:px-6 md:grid-cols-[1.25fr_1fr] md:gap-10">
         <div>
-          <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-primary uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
-            <span className="h-2 w-2 animate-blink bg-primary" aria-hidden="true" />
-            Available for new projects
-          </p>
+          <div className="flex flex-wrap gap-3">
+            <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-primary uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
+              <span className="h-2 w-2 animate-blink bg-primary" aria-hidden="true" />
+              {t(profile.location.badge)}
+            </p>
+            <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-text uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
+              <PixelIcon name="pin" size={12} className="text-primary" />
+              {t(profile.location.city)} · {profile.location.timezone}
+            </p>
+          </div>
 
           <h1 id="hero-title" className="text-display mt-7 text-text">
             {profile.firstName}
@@ -54,25 +63,25 @@ export default function Hero() {
           </p>
 
           <p className="mt-6 max-w-xl text-muted">
-            {profile.valueProp}
+            {t(profile.valueProp)}
           </p>
 
           <div className="mt-10 flex flex-wrap gap-5">
             <PixelButton href="#projects">
-              Explore my works <PixelIcon name="arrowDown" size={12} />
+              {t(ui.hero.explore)} <PixelIcon name="arrowDown" size={12} />
             </PixelButton>
             <PixelButton href={profile.cvUrl} variant="outline" download>
-              Download CV <PixelIcon name="download" size={12} />
+              {t(ui.hero.downloadCv)} <PixelIcon name="download" size={12} />
             </PixelButton>
           </div>
 
           <dl className="mt-14 grid max-w-xl grid-cols-3 gap-3">
             {profile.stats.map((s) => (
-              <div key={s.label} className="bg-surface p-3 shadow-[inset_0_0_0_2px_var(--color-line)] sm:p-4">
-                <dt className="sr-only">{s.label}</dt>
+              <div key={s.value} className="bg-surface p-3 shadow-[inset_0_0_0_2px_var(--color-line)] sm:p-4">
+                <dt className="sr-only">{t(s.label)}</dt>
                 <dd className="font-display text-3xl font-bold text-primary sm:text-4xl">{s.value}</dd>
                 <dd className="mt-2 font-label text-xs leading-snug tracking-wide text-muted uppercase sm:text-xs">
-                  {s.label}
+                  {t(s.label)}
                 </dd>
               </div>
             ))}

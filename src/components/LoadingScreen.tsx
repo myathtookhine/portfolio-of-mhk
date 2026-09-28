@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 type Props = {
   /** True while fading out after loading completes. */
@@ -13,6 +15,7 @@ const FADE_MS = 300
 // A modal <dialog>, so the page behind is inert while loading. Esc closes it
 // early and goes straight to the portfolio.
 export default function LoadingScreen({ leaving, durationMs, onDone }: Props) {
+  const { t } = useLang()
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -49,13 +52,13 @@ export default function LoadingScreen({ leaving, durationMs, onDone }: Props) {
     >
       <div className="flex w-full max-w-xs flex-col items-center text-center">
         <p role="status" className="sr-only">
-          Loading
+          {t(ui.loading)}
         </p>
         <span className="pixel-corners grid h-16 w-16 animate-float place-items-center bg-primary font-display text-lg font-bold text-bg">
           MHK
         </span>
         <p aria-hidden="true" className="mt-8 font-display text-base font-semibold text-text">
-          Loading<span className="animate-blink">...</span>
+          {t(ui.loading)}<span className="animate-blink">...</span>
         </p>
         {/* Segmented progress bar, timed to match the loading duration */}
         <div className="mt-5 h-5 w-full p-1 shadow-[inset_0_0_0_3px_var(--color-line)]" aria-hidden="true">

@@ -1,11 +1,14 @@
 import SectionTitle from '../components/SectionTitle'
 import { experience } from '../data/experience'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 export default function Experience() {
+  const { t } = useLang()
   return (
     <section id="experience" className="py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="04" title="Experience" kicker="SAVE_FILES" />
+        <SectionTitle index="04" title={t(ui.sections.experience)} kicker="SAVE_FILES" />
 
         <ol className="relative ml-2 border-l-[3px] border-dashed border-line">
           {experience.map((job, i) => (

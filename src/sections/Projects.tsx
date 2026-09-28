@@ -7,8 +7,11 @@ import ProjectModal from '../components/ProjectModal'
 import SectionTitle from '../components/SectionTitle'
 import Tag from '../components/Tag'
 import { caseStudies, otherProjects, type CaseStudy, type OtherProject } from '../data/projects'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 function FeaturedCard({ project, index }: { project: CaseStudy; index: number }) {
+  const { t } = useLang()
   return (
     <Link to={`/projects/${project.slug}`} className="block h-full" aria-label={`${project.title} case study`}>
       <PixelCard interactive className="flex flex-col p-4 sm:p-5">
@@ -27,7 +30,7 @@ function FeaturedCard({ project, index }: { project: CaseStudy; index: number })
               ))}
             </div>
             <span className="flex items-center gap-2 font-display text-sm font-semibold text-primary">
-              View <PixelIcon name="arrowRight" size={12} />
+              {t(ui.projects.view)} <PixelIcon name="arrowRight" size={12} />
             </span>
           </div>
         </div>
@@ -37,6 +40,7 @@ function FeaturedCard({ project, index }: { project: CaseStudy; index: number })
 }
 
 function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () => void }) {
+  const { t } = useLang()
   return (
     <PixelCard
       interactive
@@ -66,7 +70,7 @@ function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () =>
         <p className="mt-3 flex-1 text-sm leading-7 text-muted">{project.summary}</p>
         <div className="mt-5 flex flex-wrap items-center gap-5">
           <span aria-hidden="true" className="flex items-center gap-2 font-display text-sm font-semibold text-text group-hover/card:text-primary">
-            Details <PixelIcon name="arrowRight" size={10} />
+            {t(ui.projects.details)} <PixelIcon name="arrowRight" size={10} />
           </span>
           {project.links.map((l) => (
             // Sits above the stretched button so it stays independently clickable.
@@ -87,13 +91,14 @@ function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () =>
 }
 
 export default function Projects() {
+  const { t } = useLang()
   const [openSlug, setOpenSlug] = useState<string | null>(null)
   const openProject = otherProjects.find((p) => p.slug === openSlug) ?? null
 
   return (
     <section id="projects" className="bg-surface/40 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="01" title="Selected Work" kicker="INVENTORY" />
+        <SectionTitle index="01" title={t(ui.sections.work)} kicker="INVENTORY" />
 
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           {caseStudies.map((p, i) => (
@@ -102,7 +107,7 @@ export default function Projects() {
         </div>
 
         <h3 className="mt-20 mb-8 font-label text-lg tracking-widest text-text uppercase">
-          <span className="text-primary">■</span> Other projects
+          <span className="text-primary">■</span> {t(ui.sections.otherProjects)}
         </h3>
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {otherProjects.map((p) => (

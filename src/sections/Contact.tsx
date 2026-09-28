@@ -3,6 +3,8 @@ import PixelCard from '../components/PixelCard'
 import PixelIcon, { type IconName } from '../components/PixelIcon'
 import SectionTitle from '../components/SectionTitle'
 import { profile } from '../data/profile'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 const { contact } = profile
 
@@ -14,23 +16,27 @@ const channels: { icon: IconName; label: string; value: string; href: string; ex
 ]
 
 export default function Contact() {
+  const { t } = useLang()
   return (
     <section id="contact" className="pixel-grid-bg bg-surface/40 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="06" title="Let's Work Together" kicker="CONTACT" />
+        <SectionTitle index="06" title={t(ui.sections.contact)} kicker="CONTACT" />
 
         <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
           <div>
             <p className="max-w-md text-base leading-8 text-text/90 md:text-lg md:leading-9">
-              Have a product that needs untangling, or a team that needs a hands-on design lead? I'd love to hear
-              about it.
+              {t(ui.contact.intro)}
+            </p>
+            <p className="mt-5 flex max-w-md gap-3 text-sm leading-7 text-muted md:text-base">
+              <PixelIcon name="pin" size={14} className="mt-1.5 text-primary" />
+              <span>{t(profile.location.contactLine)}</span>
             </p>
             <div className="mt-10 flex flex-wrap gap-5">
               <PixelButton href={`mailto:${contact.email}`}>
-                Say hello <PixelIcon name="mail" size={12} />
+                {t(ui.contact.sayHello)} <PixelIcon name="mail" size={12} />
               </PixelButton>
               <PixelButton href={profile.cvUrl} variant="outline" download>
-                Download CV <PixelIcon name="download" size={12} />
+                {t(ui.hero.downloadCv)} <PixelIcon name="download" size={12} />
               </PixelButton>
             </div>
           </div>

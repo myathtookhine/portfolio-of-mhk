@@ -3,12 +3,15 @@ import PixelIcon from '../components/PixelIcon'
 import SectionTitle from '../components/SectionTitle'
 import Tag from '../components/Tag'
 import { education, skillGroups } from '../data/skills'
+import { ui } from '../data/ui'
+import { useLang } from '../i18n'
 
 export default function Skills() {
+  const { t } = useLang()
   return (
     <section id="skills" className="py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="05" title="Skills & Learning" kicker="SKILL_TREE" />
+        <SectionTitle index="05" title={t(ui.sections.skills)} kicker="SKILL_TREE" />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.5fr_1fr]">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
