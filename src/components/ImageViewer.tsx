@@ -354,7 +354,7 @@ function ToolButton({
       aria-label={label}
       title={label}
       data-close={dataClose || undefined}
-      className="grid h-10 w-10 cursor-pointer place-items-center text-text hover:bg-surface hover:text-primary aria-disabled:cursor-default aria-disabled:text-muted/40 aria-disabled:hover:bg-transparent"
+      className="grid h-10 w-10 cursor-pointer place-items-center text-text hover:bg-surface hover:text-primary aria-disabled:cursor-(--cursor-default) aria-disabled:text-muted/40 aria-disabled:hover:bg-transparent"
     >
       <PixelIcon name={icon} size={icon === 'close' || icon === 'fit' ? 14 : 18} />
     </button>

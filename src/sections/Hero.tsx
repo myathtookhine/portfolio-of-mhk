@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import HeroSnake from '../components/HeroSnake'
 import ImagePlaceholder from '../components/ImagePlaceholder'
 import PixelButton from '../components/PixelButton'
 import PixelIcon from '../components/PixelIcon'
@@ -30,6 +31,7 @@ export default function Hero() {
 
   return (
     <section className="pixel-grid-bg relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28" aria-labelledby="hero-title">
+      <HeroSnake />
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 sm:px-6 md:grid-cols-[1.25fr_1fr] md:gap-10">
         <div>
           <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-primary uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
