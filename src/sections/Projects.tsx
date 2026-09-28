@@ -93,7 +93,7 @@ export default function Projects() {
   return (
     <section id="projects" className="bg-surface/40 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="04" title="Selected Work" kicker="INVENTORY" />
+        <SectionTitle index="01" title="Selected Work" kicker="INVENTORY" />
 
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           {caseStudies.map((p, i) => (

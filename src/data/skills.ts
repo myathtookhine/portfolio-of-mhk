@@ -20,6 +20,7 @@ export const skillGroups = [
       'Framer',
       'Lottie Lab',
       'Gemini AI',
+      'Antigravity',
       'Claude Code',
       'ChatGPT',
       'Git',

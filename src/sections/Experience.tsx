@@ -5,7 +5,7 @@ export default function Experience() {
   return (
     <section id="experience" className="py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="03" title="Experience" kicker="SAVE_FILES" />
+        <SectionTitle index="04" title="Experience" kicker="SAVE_FILES" />
 
         <ol className="relative ml-2 border-l-[3px] border-dashed border-line">
           {experience.map((job, i) => (

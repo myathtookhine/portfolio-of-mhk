@@ -25,9 +25,18 @@ export type CaseStudy = {
   category: string
   year?: string
   role: string
+  /** Who I worked with. */
+  team: string
+  duration: string
   summary: string
-  description: string[]
-  highlights: string[]
+  /** The problem, in a few short paragraphs. */
+  challenge: string[]
+  /** What I was responsible for. */
+  responsibilities: string[]
+  /** How the work was done, step by step. */
+  process: { title: string; text: string }[]
+  /** Results: only what actually happened, no invented metrics. */
+  outcome: string[]
   platforms: string[]
   tags: string[]
   links: ProjectLink[]
@@ -58,22 +67,52 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'axtra-pos',
     title: 'Axtra POS',
-    category: 'Point of Sale · Merchant',
+    category: 'Point of Sale · Restaurants',
     year: '2023 – 2025',
-    role: 'Lead Product Designer',
+    role: 'Lead Designer & Frontend Dev',
+    team: 'PO, PM, full-stack developers and the operations team',
+    duration: '1+ year, start to finish',
     summary:
-      'A cross-platform Point of Sale solution that simplifies retail and restaurant operations across web, tablet, and mobile.',
-    description: [
-      'Axtra POS is a comprehensive cross-platform Point of Sale (POS) solution designed to simplify retail and restaurant operations. The system delivers a seamless experience across web, tablet, and mobile devices, allowing business owners and staff to efficiently manage sales, inventory, customers, and daily operations from anywhere.',
-      'The design focuses on creating an intuitive, clean, and responsive user experience that minimizes the learning curve while improving productivity. Consistent design patterns, clear information hierarchy, and optimized workflows ensure smooth navigation across different screen sizes and devices.',
+      'A cross-platform POS for restaurants: one product that had to work on web, desktop, tablet and phone. It is now in use at 10+ restaurants in Yangon.',
+    challenge: [
+      "Axtra POS runs a restaurant's daily work: taking orders, managing menus, inventory and reports. It had to work on every screen the business uses: web, desktop, tablets and phones.",
+      'The biggest challenge was responsive design across the whole product. Every screen had to be checked and fixed for four very different screen sizes, while the product kept growing over more than a year of development.',
     ],
-    highlights: [
-      'Led cross-platform UI/UX for the merchant POS and the consumer-facing apps',
-      'Built a centralized design system and UI kit shared by design and development',
-      'Kept patterns consistent across web, tablet, iOS and Android',
+    responsibilities: [
+      'UI/UX design for the POS and merchant screens',
+      'Responsive design across web, desktop, tablet and phone: checking every screen and fixing layouts directly in the codebase with CSS',
+      "Animated icons, graphics and the product's landing pages",
+      'Working day to day with the PO, PM, full-stack developers and the operations team',
     ],
-    platforms: ['Web', 'Tablet', 'iOS', 'Android'],
-    tags: ['POS', 'Design System', 'Figma', 'Cross-platform'],
+    process: [
+      {
+        title: 'Work with operations, not just product',
+        text: 'Besides the PO and PM, I worked closely with the operations team, so design decisions reflected how the POS is actually used day to day.',
+      },
+      {
+        title: 'Build alongside engineering',
+        text: 'Aligned priorities with the PO and PM, and worked next to the full-stack developers as features were built, instead of handing designs over a wall.',
+      },
+      {
+        title: 'Design in the product itself',
+        text: 'Rather than relying on static mockups, I refined the UI directly in the code with CSS. Fixes shipped as working screens, not as specs waiting to be implemented.',
+      },
+      {
+        title: 'Test on every screen size',
+        text: 'Checked each screen on web, desktop, tablet and phone, and fixed layout and breakpoint issues until the experience held up on all of them.',
+      },
+      {
+        title: 'Polish the details',
+        text: 'Added animated icons, graphics and landing pages to give the product a finished, consistent look.',
+      },
+    ],
+    outcome: [
+      'Delivered after more than a year of work, from start to finish',
+      'Now in use at 10+ restaurants in Yangon',
+      'One consistent product across web, desktop, tablet and phone',
+    ],
+    platforms: ['Web', 'Desktop', 'Tablet', 'Mobile'],
+    tags: ['POS', 'Responsive design', 'CSS', 'Cross-platform', 'Animated icons'],
     links: [],
     cover: {
       src: axtraBanner,
@@ -90,21 +129,52 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'smart-energy-management',
     title: 'Smart Energy Management',
-    category: 'AI-Powered Prototype',
+    category: 'Client project · AI-assisted redesign',
     role: 'Product Designer & Frontend',
+    team: 'Solo, working directly with the client',
+    duration: '2 weeks',
     summary:
-      'A concept app that helps homeowners monitor and optimize electricity use, with visuals generated using conversational AI.',
-    description: [
-      'Smart Energy Management is a concept prototype that helps homeowners monitor and optimize electricity consumption through an intuitive mobile experience. The application provides real-time energy insights, device monitoring, and intelligent notifications to encourage more efficient energy usage.',
-      "The project explores the integration of conversational AI into the design workflow by utilizing Google's Nano Banana AI to rapidly generate visual concepts, illustrations, and interface assets. AI-assisted ideation significantly accelerated the design process while maintaining a consistent visual language across the product.",
+      'A full redesign of a home energy app that brings solar, grid, battery and EV charging into one place. Delivered in 2 weeks with AI-assisted prototyping, and accepted by the client.',
+    challenge: [
+      'The client needed their whole smart electricity app redesigned: a mobile app for homeowners to monitor and control solar, grid, battery and EV charging.',
+      'A PRD covered the core requirements, but parts of the experience were not defined yet, and the timeline was just two weeks.',
     ],
-    highlights: [
-      'Live usage monitor showing solar, grid, EV and battery flows around the home load',
-      'Used AI to generate illustrations for solar, inverter, reports, alerts and help desk screens',
-      'Rebuilt the frontend in HTML, CSS and vanilla JS, and moved it from Bootstrap to Tailwind CSS',
+    responsibilities: [
+      'Redesigned the entire app, working directly with the client',
+      'Designed new user flows where the PRD left room: weather and storm mode, EV control and battery configuration',
+      'Created the animated energy-flow lines on the home screen, with 3 modes to choose from',
+      'Built the interactive prototype with AI tools (Antigravity and Gemini), including the animations and the OpenWeather API integration',
+      'Created the home screen graphics with Gemini image generation and flat illustrations in Figma',
+    ],
+    process: [
+      {
+        title: 'Start from the PRD',
+        text: "Turned the PRD's requirements into the screens and flows for the core of the app.",
+      },
+      {
+        title: 'Fill the gaps with my own flows',
+        text: 'Designed the flows the PRD did not cover: live weather from the OpenWeather API with a StormReady mode, EV charging control, and battery configuration.',
+      },
+      {
+        title: 'Prototype at AI speed',
+        text: 'Used Antigravity and Gemini as prototyping partners to build working screens, animations and the OpenWeather API integration quickly. The client could react to a working prototype instead of static mockups.',
+      },
+      {
+        title: 'Make the data feel alive',
+        text: 'Created the home screen graphics with Gemini image generation and flat illustrations in Figma, then animated the energy-flow lines between solar, grid, battery, EV and the home with CSS, in 3 display modes to choose from.',
+      },
+      {
+        title: 'Review with the client',
+        text: 'Kept the client in the loop throughout and refined the design through regular check-ins until they accepted it.',
+      },
+    ],
+    outcome: [
+      'Whole app redesigned in 2 weeks',
+      'Design accepted by the client',
+      'Interactive prototype live online',
     ],
     platforms: ['Mobile'],
-    tags: ['AI-assisted design', 'Nano Banana', 'IoT', 'Tailwind CSS'],
+    tags: ['AI-assisted design', 'Antigravity', 'Gemini', 'Figma', 'CSS animation', 'OpenWeather API'],
     links: [{ label: 'View live demo', href: 'https://myathtookhine.github.io/smart-electricity-clean/' }],
     cover: {
       src: energyBanner,

@@ -6,7 +6,7 @@ export default function About() {
   return (
     <section id="about" className="py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="01" title="About Me" />
+        <SectionTitle index="02" title="About Me" />
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr] md:gap-16">
           <div className="space-y-6 text-base leading-8 text-text/90 md:text-lg md:leading-9">
             <p>{profile.about}</p>

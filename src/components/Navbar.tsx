@@ -4,10 +4,10 @@ import { profile } from '../data/profile'
 import PixelIcon from './PixelIcon'
 
 const navItems = [
-  { id: 'about', label: 'About' },
-  { id: 'vision', label: 'Vision' },
-  { id: 'experience', label: 'Experience' },
   { id: 'projects', label: 'Projects' },
+  { id: 'about', label: 'About' },
+  { id: 'strengths', label: 'Strengths' },
+  { id: 'experience', label: 'Experience' },
   { id: 'skills', label: 'Skills' },
   { id: 'contact', label: 'Contact' },
 ]

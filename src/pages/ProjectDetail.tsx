@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ImageViewer from '../components/ImageViewer'
 import PixelButton from '../components/PixelButton'
@@ -9,6 +9,20 @@ import ZoomableImage from '../components/ZoomableImage'
 import { caseStudies } from '../data/projects'
 import { profile } from '../data/profile'
 import NotFound from './NotFound'
+
+/** Numbered section of the case study story. */
+function Chapter({ n, title, children }: { n: number; title: string; children: ReactNode }) {
+  const id = `chapter-${n}`
+  return (
+    <section className="mt-16 md:mt-20" aria-labelledby={id}>
+      <p className="font-label text-sm tracking-widest text-primary uppercase">&gt; {String(n).padStart(2, '0')}</p>
+      <h2 id={id} className="mt-2 text-2xl text-text sm:text-3xl">
+        {title}
+      </h2>
+      <div className="mt-6">{children}</div>
+    </section>
+  )
+}
 
 export default function ProjectDetail() {
   const { slug } = useParams()
@@ -22,6 +36,12 @@ export default function ProjectDetail() {
   const prev = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length]
   const next = caseStudies[(index + 1) % caseStudies.length]
   const viewerImages = [project.cover, ...project.images]
+
+  const facts = [
+    { label: 'Role', value: project.role },
+    { label: 'Team', value: project.team },
+    { label: 'Duration', value: project.duration },
+  ]
 
   return (
     <article className="pt-24 pb-20 md:pt-32">
@@ -52,7 +72,27 @@ export default function ProjectDetail() {
           )}
         </header>
 
-        <div className="mt-12">
+        {/* Key facts at a glance */}
+        <dl className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {facts.map((f) => (
+            <div key={f.label} className="bg-surface p-4 shadow-[inset_0_0_0_2px_var(--color-line)]">
+              <dt className="font-label text-xs tracking-widest text-muted uppercase">{f.label}</dt>
+              <dd className="mt-1.5 text-text">{f.value}</dd>
+            </div>
+          ))}
+          <div className="bg-surface p-4 shadow-[inset_0_0_0_2px_var(--color-line)]">
+            <dt className="font-label text-xs tracking-widest text-muted uppercase">Platforms</dt>
+            <dd className="mt-2 flex flex-wrap gap-2">
+              {project.platforms.map((p) => (
+                <Tag key={p} tone="primary">
+                  {p}
+                </Tag>
+              ))}
+            </dd>
+          </div>
+        </dl>
+
+        <div className="mt-10">
           <ZoomableImage
             src={project.cover.src}
             alt={project.cover.alt}
@@ -62,63 +102,62 @@ export default function ProjectDetail() {
           />
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] lg:gap-16">
-          <div>
-            <h2 className="font-label text-lg tracking-widest text-text uppercase">
-              <span className="text-primary">■</span> Overview
-            </h2>
-            <div className="mt-6 space-y-5 leading-8 text-text/85 md:text-base">
-              {project.description.map((d) => (
-                <p key={d}>{d}</p>
+        {/* The story: challenge → role → process → outcome */}
+        <div className="max-w-4xl">
+          <Chapter n={1} title="The challenge">
+            <div className="space-y-5 text-base leading-8 text-text/85 md:text-lg md:leading-9">
+              {project.challenge.map((p) => (
+                <p key={p}>{p}</p>
               ))}
             </div>
+          </Chapter>
 
-            <h2 className="mt-14 font-label text-lg tracking-widest text-text uppercase">
-              <span className="text-primary">■</span> Highlights
-            </h2>
-            <ul className="mt-6 space-y-4">
-              {project.highlights.map((h) => (
-                <li key={h} className="flex gap-4 text-text/85">
-                  <PixelIcon name="star" size={14} className="mt-1 text-primary" />
-                  <span>{h}</span>
+          <Chapter n={2} title="My role">
+            <ul className="space-y-4">
+              {project.responsibilities.map((r) => (
+                <li key={r} className="flex gap-4 text-text/85 md:text-lg">
+                  <span aria-hidden="true" className="mt-[0.65em] h-2 w-2 shrink-0 bg-primary" />
+                  <span>{r}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </Chapter>
 
-          <aside>
-            <PixelCard className="space-y-6 p-6">
-              <div>
-                <p className="font-label text-xs tracking-widest text-muted uppercase">Role</p>
-                <p className="mt-1 text-text">{project.role}</p>
-              </div>
-              {project.year && (
-                <div>
-                  <p className="font-label text-xs tracking-widest text-muted uppercase">Timeline</p>
-                  <p className="mt-1 text-text">{project.year}</p>
-                </div>
-              )}
-              <div>
-                <p className="font-label text-xs tracking-widest text-muted uppercase">Platforms</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {project.platforms.map((p) => (
-                    <Tag key={p} tone="primary">
-                      {p}
-                    </Tag>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="font-label text-xs tracking-widest text-muted uppercase">Tags</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {project.tags.map((t) => (
-                    <Tag key={t}>{t}</Tag>
-                  ))}
-                </div>
-              </div>
-            </PixelCard>
-          </aside>
+          <Chapter n={3} title="Process">
+            <ol className="relative ml-2 border-l-[3px] border-dashed border-line">
+              {project.process.map((step, i) => (
+                <li key={step.title} className="relative pb-10 pl-8 last:pb-0 sm:pl-10">
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-0.5 -left-3.5 grid h-6 w-6 place-items-center bg-primary font-display text-xs font-bold text-bg shadow-[0_0_0_3px_var(--color-bg)]"
+                  >
+                    {i + 1}
+                  </span>
+                  <h3 className="text-lg text-text sm:text-xl">{step.title}</h3>
+                  <p className="mt-2 leading-7 text-text/80">{step.text}</p>
+                </li>
+              ))}
+            </ol>
+          </Chapter>
         </div>
+
+        <Chapter n={4} title="Outcome">
+          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {project.outcome.map((o) => (
+              <li key={o}>
+                <PixelCard className="flex h-full items-start gap-4 p-5">
+                  <PixelIcon name="star" size={18} className="mt-0.5 text-primary" />
+                  <span className="font-display text-lg leading-snug font-semibold text-text">{o}</span>
+                </PixelCard>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 flex flex-wrap gap-2">
+            {project.tags.map((t) => (
+              <Tag key={t}>{t}</Tag>
+            ))}
+          </div>
+        </Chapter>
 
         <section className="mt-20" aria-labelledby="gallery-title">
           <h2 id="gallery-title" className="font-label text-lg tracking-widest text-text uppercase">

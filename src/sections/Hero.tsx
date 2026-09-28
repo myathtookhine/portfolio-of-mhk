@@ -54,8 +54,7 @@ export default function Hero() {
           </p>
 
           <p className="mt-6 max-w-xl text-muted">
-            {profile.subtitle} with 9+ years of turning complex business requirements into intuitive web and
-            mobile products.
+            {profile.valueProp}
           </p>
 
           <div className="mt-10 flex flex-wrap gap-5">
@@ -84,7 +83,7 @@ export default function Hero() {
           <div aria-hidden="true" className="pixel-corners absolute inset-0 translate-x-3 translate-y-3 bg-primary" />
           <div className="pixel-corners relative bg-surface p-3 shadow-[inset_0_0_0_3px_var(--color-line)]">
             <div className="mb-3 flex items-center justify-between px-1 font-label text-xs tracking-widest text-muted uppercase">
-              <span>player_01.png</span>
+              <span>player_01</span>
               {/* <span className="flex gap-1.5" aria-hidden="true">
                 <span className="h-2.5 w-2.5 bg-primary" />
                 <span className="h-2.5 w-2.5 bg-line" />
