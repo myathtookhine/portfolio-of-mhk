@@ -7,6 +7,17 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
+    role: 'Freelance Product Designer',
+    company: 'Self-employed',
+    period: '2025 – 2026',
+    points: [
+      'Created PonSarYay, my own open-source text-on-image web editor with Burmese font integrations, and used GA4 insights to refine its UX.',
+      'Designed a Museum Management System: dashboard, categories, artifact details with multilingual descriptions and voice narration, exhibitions, and a visitor app.',
+      'Designed a Gold Shop Management system with a daily gold price board by purity, sales overviews, and a built-in POS.',
+      'Designed an E-ticket Management System that runs bus, train, flight and event ticketing from a single operations dashboard.',
+    ],
+  },
+  {
     role: 'Lead Designer & Frontend Dev',
     company: 'Online Merchant Solutions Co. Ltd.',
     period: '2023 – 2025',

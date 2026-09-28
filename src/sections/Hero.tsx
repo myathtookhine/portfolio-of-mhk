@@ -83,11 +83,11 @@ export default function Hero() {
           <div className="pixel-corners relative bg-surface p-3 shadow-[inset_0_0_0_3px_var(--color-line)]">
             <div className="mb-3 flex items-center justify-between px-1 font-label text-xs tracking-widest text-muted uppercase">
               <span>player_01.png</span>
-              <span className="flex gap-1.5" aria-hidden="true">
+              {/* <span className="flex gap-1.5" aria-hidden="true">
                 <span className="h-2.5 w-2.5 bg-primary" />
                 <span className="h-2.5 w-2.5 bg-line" />
                 <span className="h-2.5 w-2.5 bg-line" />
-              </span>
+              </span> */}
             </div>
             <ImagePlaceholder
               src={profile.portrait}

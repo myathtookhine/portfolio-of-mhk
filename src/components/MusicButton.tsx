@@ -13,7 +13,8 @@ export default function MusicButton({ playing, onToggle, showPrompt, onPromptAcc
   const label = playing ? 'Pause background music' : 'Play background music'
 
   return (
-    <div className="fixed right-4 bottom-4 z-50 flex items-center gap-4 sm:right-6 sm:bottom-6">
+    // data-music-controls: clicks here aren't treated as the page's "first interaction".
+    <div data-music-controls className="fixed right-4 bottom-4 z-50 flex items-center gap-4 sm:right-6 sm:bottom-6">
       {showPrompt && (
         <div role="group" aria-label="Background music" className="relative animate-pop">
           <div className="pixel-corners flex items-center bg-surface py-1 pr-1 pl-4 shadow-[inset_0_0_0_3px_var(--color-primary)]">

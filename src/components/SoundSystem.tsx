@@ -2,26 +2,29 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import LoadingScreen from './LoadingScreen'
 import MusicButton from './MusicButton'
 
-const LOADING_MS = 2000
+const LOADING_MS = 1000
 /** Delay between the intro sound and the background loop. */
 const LOOP_DELAY_MS = 2000
-const INTRO_VOLUME = 0.8
-const LOOP_VOLUME = 0.5
+const INTRO_VOLUME = 0.45
+const LOOP_VOLUME = 0.25
 
 const soundUrl = (file: string) => `${import.meta.env.BASE_URL}sounds/${file}`
 
 type Phase = 'loading' | 'leaving' | 'ready'
 
 /**
- * Loader (2s), then the portfolio shows right away. Sound is opt-in: the
- * "Sound on?" bubble or the music button plays the intro, then the looping
- * background music 2s later. Browsers only allow sound after a click, and it
- * keeps recruiters from being surprised by audio.
+ * Loader (1s), then the sound starts automatically: the intro, then the
+ * looping background music 2s later.
+ *
+ * Browsers block sound until the visitor clicks, taps or presses a key, so if
+ * autoplay is refused the sequence starts on their first interaction instead.
+ * Meanwhile a "Sound on?" bubble shows; its × opts out.
  */
 export default function SoundSystem() {
   const [phase, setPhase] = useState<Phase>('loading')
   const [playing, setPlaying] = useState(false)
-  const [showPrompt, setShowPrompt] = useState(true)
+  // Only shown if autoplay is blocked.
+  const [showPrompt, setShowPrompt] = useState(false)
   const introRef = useRef<HTMLAudioElement | null>(null)
   const loopRef = useRef<HTMLAudioElement | null>(null)
   /** Pending start of the loop while the intro plays. */
@@ -29,6 +32,8 @@ export default function SoundSystem() {
   const startedRef = useRef(false)
   // True while the loop is briefly started and stopped to unlock it (see startSequence).
   const primingRef = useRef(false)
+  /** Removes the "start on first interaction" listeners, if armed. */
+  const disarmRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
     const intro = new Audio(soundUrl('starter-sound.mp3'))
@@ -60,6 +65,7 @@ export default function SoundSystem() {
     return () => {
       window.clearTimeout(loadTimer)
       window.clearTimeout(loopTimerRef.current)
+      disarmRef.current?.()
       loop.removeEventListener('play', onPlay)
       loop.removeEventListener('pause', onPause)
       intro.pause()
@@ -69,12 +75,22 @@ export default function SoundSystem() {
     }
   }, [])
 
-  // Must run inside a click: that's the user gesture browsers require for sound.
+  const scheduleLoop = useCallback(() => {
+    const loop = loopRef.current
+    if (!loop) return
+    loopTimerRef.current = window.setTimeout(() => {
+      loopTimerRef.current = undefined
+      loop.play().catch(() => setPlaying(false))
+    }, LOOP_DELAY_MS)
+  }, [])
+
+  // Must run inside a click/tap/key press: the user gesture browsers require for sound.
   const startSequence = useCallback(() => {
     const intro = introRef.current
     const loop = loopRef.current
-    if (!intro || !loop) return
+    if (!intro || !loop || startedRef.current) return
     startedRef.current = true
+    disarmRef.current?.()
     setShowPrompt(false)
     setPlaying(true)
 
@@ -82,7 +98,7 @@ export default function SoundSystem() {
 
     // Safari/iOS only allow a later play() on an element that was started during
     // a gesture. Start the loop muted now, then stop and rewind it, so the
-    // delayed play() below is allowed there too.
+    // delayed play() is allowed there too.
     primingRef.current = true
     loop.muted = true
     loop
@@ -99,11 +115,44 @@ export default function SoundSystem() {
         loop.muted = false
       })
 
-    loopTimerRef.current = window.setTimeout(() => {
-      loopTimerRef.current = undefined
-      loop.play().catch(() => setPlaying(false))
-    }, LOOP_DELAY_MS)
-  }, [])
+    scheduleLoop()
+  }, [scheduleLoop])
+
+  // Autoplay is refused: start on the visitor's first click, tap or key press.
+  const armFirstInteraction = useCallback(() => {
+    const onInteract = (e: Event) => {
+      // Esc doesn't count as a gesture for sound; the music controls handle their own clicks.
+      if (e instanceof KeyboardEvent && e.key === 'Escape') return
+      if (e.target instanceof Element && e.target.closest('[data-music-controls]')) return
+      startSequence()
+    }
+    // click (not pointerdown): on touch screens only the end of a tap counts as a gesture.
+    window.addEventListener('click', onInteract)
+    window.addEventListener('keydown', onInteract)
+    disarmRef.current = () => {
+      window.removeEventListener('click', onInteract)
+      window.removeEventListener('keydown', onInteract)
+      disarmRef.current = null
+    }
+  }, [startSequence])
+
+  // When loading ends, try to start the sound right away.
+  const autoplay = useCallback(() => {
+    const intro = introRef.current
+    if (!intro || startedRef.current) return
+    intro
+      .play()
+      .then(() => {
+        // Allowed (e.g. the visitor already interacted): run the sequence.
+        startedRef.current = true
+        setPlaying(true)
+        scheduleLoop()
+      })
+      .catch(() => {
+        setShowPrompt(true)
+        armFirstInteraction()
+      })
+  }, [scheduleLoop, armFirstInteraction])
 
   const toggle = useCallback(() => {
     const intro = introRef.current
@@ -125,8 +174,16 @@ export default function SoundSystem() {
     else loop.pause()
   }, [startSequence])
 
-  const dismissPrompt = useCallback(() => setShowPrompt(false), [])
-  const finishLoading = useCallback(() => setPhase('ready'), [])
+  // × on the bubble: no sound, and stop waiting for a first interaction.
+  const dismissPrompt = useCallback(() => {
+    setShowPrompt(false)
+    disarmRef.current?.()
+  }, [])
+
+  const finishLoading = useCallback(() => {
+    setPhase('ready')
+    autoplay()
+  }, [autoplay])
 
   return (
     <>

@@ -56,6 +56,12 @@ export const skillGroups = [
 ]
 
 export const education: { title: string; place: string; note: string; url?: string }[] = [
+  {
+    title: 'Introduction to AI',
+    place: 'Google · Coursera',
+    note: 'Certificate',
+    url: 'https://coursera.org/share/d7aaff09890906e775bc8754b413d617',
+  },
   { title: 'Google UX Design Professional Cert.', place: 'Coursera', note: 'In progress' },
   {
     title: 'Foundations of UX Design',

@@ -18,7 +18,7 @@
   --animate-blink: blink 1s steps(1) infinite;
   --animate-float: float 3s steps(4) infinite;
   --animate-pop: pop 180ms steps(4) both;
-  --animate-loadbar: loadbar 2s steps(20) forwards;
+  --animate-loadbar: loadbar 1s steps(20) forwards;
   --animate-radiate: radiate 1.6s steps(8) infinite;
 
   @keyframes loadbar {

@@ -20,9 +20,9 @@ function App() {
       <Navbar />
       <main id="main" className="flex-1">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects/:slug" element={<ProjectDetail />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" Component={Home} />
+          <Route path="/projects/:slug" Component={ProjectDetail} />
+          <Route path="*" Component={NotFound} />
         </Routes>
       </main>
       <Footer />

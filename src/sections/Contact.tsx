@@ -10,6 +10,7 @@ const channels: { icon: IconName; label: string; value: string; href: string; ex
   { icon: 'mail', label: 'Email', value: contact.email, href: `mailto:${contact.email}` },
   { icon: 'phone', label: 'Mobile', value: contact.phone, href: contact.phoneHref },
   { icon: 'linkedin', label: 'LinkedIn', value: contact.linkedin, href: contact.linkedinHref, external: true },
+  { icon: 'github', label: 'GitHub', value: contact.github, href: contact.githubHref, external: true },
 ]
 
 export default function Contact() {

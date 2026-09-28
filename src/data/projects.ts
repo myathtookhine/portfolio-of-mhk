@@ -190,7 +190,7 @@ export const otherProjects: OtherProject[] = [
   },
   {
     slug: 'e-ticket-management',
-    title: 'E-ticket Management',
+    title: 'E-ticket Management System',
     category: 'Ticketing · Admin Console',
     role: 'Product Designer & Frontend',
     summary:
@@ -235,14 +235,14 @@ export const otherProjects: OtherProject[] = [
     links: [],
   },
   {
-    slug: 'museum-admin',
-    title: 'Museum Admin Management System',
+    slug: 'museum-management',
+    title: 'Museum Management System',
     category: 'Culture · Admin & Visitor App',
     role: 'Product Designer',
     summary:
       "An admin platform for managing a museum's collection and exhibitions, with a visitor app that reads artifact stories aloud in multiple languages.",
     description: [
-      "Museum Admin brings a museum's collection, exhibitions and visitor experience into one management system. Staff organize artifacts by category, build exhibitions from them, and keep every artifact's story up to date in one place.",
+      "The Museum Management System brings a museum's collection, exhibitions and visitor experience into one management system. Staff organize artifacts by category, build exhibitions from them, and keep every artifact's story up to date in one place.",
       "The same content powers a visitor app. Each artifact's description is available in multiple languages, and visitors can choose a voice to have it read aloud as they walk through the galleries, which makes the museum more accessible to international guests and people who prefer listening to reading.",
     ],
     highlights: [
