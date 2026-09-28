@@ -60,7 +60,7 @@ export default function Hero() {
 
           <div className="mt-10 flex flex-wrap gap-5">
             <PixelButton href="#projects">
-              Explore now <PixelIcon name="arrowDown" size={12} />
+              Explore my works <PixelIcon name="arrowDown" size={12} />
             </PixelButton>
             <PixelButton href={profile.cvUrl} variant="outline" download>
               Download CV <PixelIcon name="download" size={12} />
