@@ -7,6 +7,10 @@ const LOADING_MS = 1000
 const LOOP_DELAY_MS = 2000
 const INTRO_VOLUME = 0.45
 const LOOP_VOLUME = 0.25
+const LOOP_FILE = 'zephiramusic-lofi-calm-583391.mp3'
+/** Tempo of the loop and where its first beat lands, measured from the file. */
+const LOOP_BPM = 132
+const LOOP_FIRST_BEAT_S = 0.033
 
 const soundUrl = (file: string) => `${import.meta.env.BASE_URL}sounds/${file}`
 
@@ -37,7 +41,7 @@ export default function SoundSystem() {
 
   useEffect(() => {
     const intro = new Audio(soundUrl('starter-sound.mp3'))
-    const loop = new Audio(soundUrl('loop-sound.mp3'))
+    const loop = new Audio(soundUrl(LOOP_FILE))
     intro.volume = INTRO_VOLUME
     intro.preload = 'auto'
     loop.volume = LOOP_VOLUME
@@ -180,6 +184,13 @@ export default function SoundSystem() {
     disarmRef.current?.()
   }, [])
 
+  // Beats elapsed in the loop, so the button's rings pulse with the music; null while it isn't playing.
+  const loopBeats = useCallback(() => {
+    const loop = loopRef.current
+    if (!loop || loop.paused) return null
+    return ((loop.currentTime - LOOP_FIRST_BEAT_S) * LOOP_BPM) / 60
+  }, [])
+
   const finishLoading = useCallback(() => {
     setPhase('ready')
     autoplay()
@@ -194,6 +205,8 @@ export default function SoundSystem() {
         <MusicButton
           playing={playing}
           onToggle={toggle}
+          beatBpm={LOOP_BPM}
+          getBeats={loopBeats}
           showPrompt={showPrompt}
           onPromptAccept={startSequence}
           onPromptDismiss={dismissPrompt}

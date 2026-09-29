@@ -50,5 +50,6 @@ export const ui = {
   },
   loading: { en: 'Loading', my: 'ဖွင့်နေသည်' },
   soundOn: { en: 'Sound on?', my: 'အသံ ဖွင့်မလား?' },
+  nowPlaying: { en: 'Now playing · lofi', my: 'သီချင်း ဖွင့်နေပါတယ်' },
   backToTop: { en: 'Back to top', my: 'အပေါ်သို့' },
 } satisfies Record<string, Localized | Record<string, Localized>>
