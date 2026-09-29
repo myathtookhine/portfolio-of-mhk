@@ -9,7 +9,7 @@ export const experience: Experience[] = [
   {
     role: 'Freelance Product Designer',
     company: 'Self-employed',
-    period: '2025 – 2026',
+    period: '2025 – Present',
     points: [
       'Created PonSarYay, my own open-source text-on-image web editor with Burmese font integrations, and used GA4 insights to refine its UX.',
       'Designed a Museum Management System: dashboard, categories, artifact details with multilingual descriptions and voice narration, exhibitions, and a visitor app.',
