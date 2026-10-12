@@ -43,10 +43,10 @@ export default function Hero() {
               <span className="h-2 w-2 animate-blink bg-primary" aria-hidden="true" />
               {t(profile.location.badge)}
             </p>
-            <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-text uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
+            {/* <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-text uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
               <PixelIcon name="pin" size={12} className="text-primary" />
               {t(profile.location.city)} · {profile.location.timezone}
-            </p>
+            </p> */}
           </div>
 
           <h1 id="hero-title" className="text-display mt-7 text-text">
