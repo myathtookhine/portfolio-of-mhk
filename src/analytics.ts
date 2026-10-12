@@ -2,20 +2,22 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 /**
- * Google Analytics 4.
- *
- * gtag.js is only loaded in production builds that have a measurement ID, so
- * `npm run dev` never writes to the real property; in dev every call is logged
- * to the console instead.
+ * Analytics: Google Analytics 4 for the numbers, Microsoft Clarity for session
+ * recordings and heatmaps. Both are loaded only in production builds that carry
+ * an ID, so `npm run dev` never writes to either; in dev GA calls are logged to
+ * the console instead.
  *
  * Page views are sent by hand (see usePageView) because this is a single-page
  * app: gtag's own page_view fires on the first load only, so every route change
- * after it would go unrecorded.
+ * after it would go unrecorded. Clarity follows route changes by itself.
  */
 
 const MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? ''
 // A real ID looks like G-ABC1234XYZ; an empty or half-filled one turns GA off.
 const enabled = import.meta.env.PROD && /^G-[A-Z0-9]{6,}$/.test(MEASUREMENT_ID)
+
+const CLARITY_ID = import.meta.env.VITE_CLARITY_PROJECT_ID ?? ''
+const clarityEnabled = import.meta.env.PROD && /^[a-z0-9]{6,}$/i.test(CLARITY_ID)
 
 /** The events this site sends. Listed here so the names stay consistent. */
 type EventName =
@@ -35,10 +37,14 @@ type EventName =
 
 type EventParams = Record<string, string | number | boolean | undefined>
 
+/** Clarity's own queueing stub, which the tag drains once it loads. */
+type ClarityFn = ((...args: unknown[]) => void) & { q?: unknown[] }
+
 declare global {
   interface Window {
     dataLayer?: unknown[]
     gtag?: (...args: unknown[]) => void
+    clarity?: ClarityFn
   }
 }
 
@@ -63,6 +69,30 @@ function load() {
   const script = document.createElement('script')
   script.async = true
   script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`
+  document.head.append(script)
+}
+
+let clarityLoaded = false
+
+/**
+ * Loads Clarity. It records sessions and builds heatmaps on its own, so nothing
+ * else in the app has to call it.
+ */
+function loadClarity() {
+  if (clarityLoaded || !clarityEnabled) return
+  clarityLoaded = true
+
+  // Calls made before the tag arrives are queued on .q, exactly as Clarity's
+  // own snippet does, so none are lost.
+  const stub: ClarityFn = function clarity() {
+    // eslint-disable-next-line prefer-rest-params
+    ;(stub.q = stub.q ?? []).push(arguments)
+  }
+  window.clarity = window.clarity ?? stub
+
+  const script = document.createElement('script')
+  script.async = true
+  script.src = `https://www.clarity.ms/tag/${CLARITY_ID}`
   document.head.append(script)
 }
 
@@ -102,6 +132,7 @@ export function usePageView(title?: string | null) {
   const { pathname, search } = useLocation()
 
   useEffect(() => {
+    loadClarity()
     if (title === null) return
     trackPageView(title ?? document.title)
   }, [pathname, search, title])
