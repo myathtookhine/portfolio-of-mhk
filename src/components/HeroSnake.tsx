@@ -37,8 +37,8 @@ export default function HeroSnake() {
 
     const theme = getComputedStyle(document.documentElement)
     const color = (name: string, fallback: string) => theme.getPropertyValue(name).trim() || fallback
-    const BODY = color('--color-primary', '#fab304')
-    const SHADE = color('--color-primary-dark', '#c98f00')
+    const BODY = color('--color-primary', '#d26b08')
+    const SHADE = color('--color-primary-dark', '#a85606')
     const EYE = color('--color-bg', '#171717')
 
     let cols = 0
