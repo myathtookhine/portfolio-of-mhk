@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { trackEvent } from '../analytics'
 import { profile } from '../data/profile'
 import { ui } from '../data/ui'
 import { useLang } from '../i18n'
@@ -20,10 +21,17 @@ function useActiveSection(enabled: boolean) {
 
   useEffect(() => {
     if (!enabled) return
+    // One section_view per section per visit, so a long read isn't counted twice.
+    const seen = new Set<string>()
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id)
+          if (!entry.isIntersecting) continue
+          setActive(entry.target.id)
+          if (!seen.has(entry.target.id)) {
+            seen.add(entry.target.id)
+            trackEvent('section_view', { section: entry.target.id })
+          }
         }
       },
       { rootMargin: '-45% 0px -50% 0px' },
@@ -82,6 +90,7 @@ export default function Navbar() {
             <li key={id}>
               <Link
                 to={{ pathname: '/', hash: id }}
+                onClick={() => trackEvent('nav_click', { section: id, placement: 'desktop' })}
                 className={`block px-3 py-2 font-label text-sm tracking-wider uppercase transition-colors hover:text-primary ${
                   active === id ? 'text-primary' : 'text-text/80'
                 }`}
@@ -116,7 +125,10 @@ export default function Navbar() {
               <li key={id}>
                 <Link
                   to={{ pathname: '/', hash: id }}
-                  onClick={close}
+                  onClick={() => {
+                    trackEvent('nav_click', { section: id, placement: 'mobile' })
+                    close()
+                  }}
                   className="flex items-center gap-4 px-2 py-3 font-display text-lg font-semibold text-text hover:bg-surface hover:text-primary"
                 >
                   <span className="text-primary">0{i + 1}</span>
@@ -126,7 +138,11 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="mt-8 border-t-[3px] border-dashed border-line pt-6 font-label text-sm text-muted">
-            <a href={`mailto:${profile.contact.email}`} className="hover:text-primary">
+            <a
+              href={`mailto:${profile.contact.email}`}
+              className="hover:text-primary"
+              onClick={() => trackEvent('contact_click', { channel: 'email', placement: 'nav' })}
+            >
               {profile.contact.email}
             </a>
           </div>

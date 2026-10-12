@@ -1,3 +1,4 @@
+import { trackEvent } from '../analytics'
 import { profile } from '../data/profile'
 import PixelIcon from './PixelIcon'
 import { ui } from '../data/ui'
@@ -19,6 +20,7 @@ export default function Footer() {
             href={profile.contact.linkedinHref}
             target="_blank"
             rel="noreferrer"
+            onClick={() => trackEvent('contact_click', { channel: 'linkedin', placement: 'footer' })}
             className="flex items-center gap-2 hover:text-primary"
           >
             <PixelIcon name="linkedin" size={12} /> LinkedIn

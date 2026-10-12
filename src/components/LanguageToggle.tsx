@@ -1,3 +1,4 @@
+import { trackEvent } from '../analytics'
 import { useLang, type Lang } from '../i18n'
 
 const OPTIONS: { value: Lang; label: string; name: string }[] = [
@@ -17,7 +18,10 @@ export default function LanguageToggle() {
           lang={o.value}
           aria-pressed={lang === o.value}
           aria-label={o.name}
-          onClick={() => setLang(o.value)}
+          onClick={() => {
+            if (o.value !== lang) trackEvent('language_change', { language: o.value })
+            setLang(o.value)
+          }}
           className={`px-2.5 py-1.5 text-xs font-semibold transition-colors ${
             lang === o.value ? 'bg-primary text-bg' : 'text-text/80 hover:text-primary'
           } ${o.value === 'en' ? 'font-label tracking-wider' : 'font-display'}`}

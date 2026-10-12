@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { trackEvent } from '../analytics'
 import HeroSnake from '../components/HeroSnake'
 import ImagePlaceholder from '../components/ImagePlaceholder'
 import PixelButton from '../components/PixelButton'
@@ -67,10 +68,18 @@ export default function Hero() {
           </p>
 
           <div className="mt-10 flex flex-wrap gap-5">
-            <PixelButton href="#projects">
+            <PixelButton
+              href="#projects"
+              onClick={() => trackEvent('nav_click', { section: 'projects', placement: 'hero_cta' })}
+            >
               {t(ui.hero.explore)} <PixelIcon name="arrowDown" size={12} />
             </PixelButton>
-            <PixelButton href={profile.cvUrl} variant="outline" download>
+            <PixelButton
+              href={profile.cvUrl}
+              variant="outline"
+              download
+              onClick={() => trackEvent('cv_download', { placement: 'hero' })}
+            >
               {t(ui.hero.downloadCv)} <PixelIcon name="download" size={12} />
             </PixelButton>
           </div>

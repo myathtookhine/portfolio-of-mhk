@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { trackEvent } from '../analytics'
 import ImagePlaceholder from '../components/ImagePlaceholder'
 import PixelCard from '../components/PixelCard'
 import PixelIcon from '../components/PixelIcon'
@@ -13,7 +14,12 @@ import { useLang } from '../i18n'
 function FeaturedCard({ project, index }: { project: CaseStudy; index: number }) {
   const { t } = useLang()
   return (
-    <Link to={`/projects/${project.slug}`} className="block h-full" aria-label={`${project.title} case study`}>
+    <Link
+      to={`/projects/${project.slug}`}
+      className="block h-full"
+      aria-label={`${project.title} case study`}
+      onClick={() => trackEvent('case_study_click', { slug: project.slug, placement: 'home_featured' })}
+    >
       <PixelCard interactive className="flex flex-col p-4 sm:p-5">
         <ImagePlaceholder src={project.cover.src} alt={project.cover.alt} ratio="16 / 10" />
         <div className="flex flex-1 flex-col px-1 pt-6 pb-2">
@@ -79,6 +85,9 @@ function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () =>
               href={l.href}
               target="_blank"
               rel="noreferrer"
+              onClick={() =>
+                trackEvent('project_link_click', { project: project.title, link: l.label, placement: 'card' })
+              }
               className="relative z-10 flex items-center gap-2 font-display text-sm font-semibold text-muted hover:text-primary"
             >
               {l.label} <PixelIcon name="external" size={10} />
@@ -112,7 +121,13 @@ export default function Projects() {
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {otherProjects.map((p) => (
             <li key={p.slug}>
-              <ProjectCard project={p} onOpen={() => setOpenSlug(p.slug)} />
+              <ProjectCard
+                project={p}
+                onOpen={() => {
+                  setOpenSlug(p.slug)
+                  trackEvent('project_modal_open', { slug: p.slug, title: p.title })
+                }}
+              />
             </li>
           ))}
         </ul>

@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { trackEvent, usePageView } from '../analytics'
 import ImageViewer from '../components/ImageViewer'
 import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
@@ -30,12 +31,20 @@ export default function ProjectDetail() {
   // Open image in the viewer: 0 = cover, 1… = screens.
   const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
+  // null for an unknown slug: NotFound reports that view itself.
+  usePageView(index === -1 ? null : `${caseStudies[index].title} — ${profile.name}`)
+
   if (index === -1) return <NotFound />
 
   const project = caseStudies[index]
   const prev = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length]
   const next = caseStudies[(index + 1) % caseStudies.length]
   const viewerImages = [project.cover, ...project.images]
+
+  const openViewer = (i: number) => {
+    setViewerIndex(i)
+    trackEvent('image_zoom', { project: project.title, image: viewerImages[i].alt })
+  }
 
   const facts = [
     { label: 'Role', value: project.role },
@@ -64,7 +73,14 @@ export default function ProjectDetail() {
           {project.links.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-5">
               {project.links.map((l) => (
-                <PixelButton key={l.href} href={l.href} external>
+                <PixelButton
+                  key={l.href}
+                  href={l.href}
+                  external
+                  onClick={() =>
+                    trackEvent('project_link_click', { project: project.title, link: l.label, placement: 'detail' })
+                  }
+                >
                   {l.label} <PixelIcon name="external" size={12} />
                 </PixelButton>
               ))}
@@ -98,7 +114,7 @@ export default function ProjectDetail() {
             alt={project.cover.alt}
             natural
             loading="eager"
-            onOpen={() => setViewerIndex(0)}
+            onOpen={() => openViewer(0)}
           />
         </div>
 
@@ -169,7 +185,7 @@ export default function ProjectDetail() {
             {project.images.map((img, i) => (
               <li key={img.src}>
                 <figure>
-                  <ZoomableImage src={img.src} alt={img.alt} natural onOpen={() => setViewerIndex(i + 1)} />
+                  <ZoomableImage src={img.src} alt={img.alt} natural onOpen={() => openViewer(i + 1)} />
                   <figcaption className="mt-3 flex gap-3 text-sm text-muted">
                     <span className="font-label tracking-widest text-primary">0{i + 1}</span>
                     {img.alt}
@@ -185,7 +201,11 @@ export default function ProjectDetail() {
           aria-label="More projects"
         >
           {prev.slug !== next.slug ? (
-            <Link to={`/projects/${prev.slug}`} className="group block">
+            <Link
+              to={`/projects/${prev.slug}`}
+              className="group block"
+              onClick={() => trackEvent('case_study_click', { slug: prev.slug, placement: 'detail_nav' })}
+            >
               <span className="flex items-center gap-2 font-label text-xs tracking-widest text-muted uppercase">
                 <PixelIcon name="arrowLeft" size={10} /> Previous level
               </span>
@@ -196,7 +216,11 @@ export default function ProjectDetail() {
           ) : (
             <span aria-hidden="true" />
           )}
-          <Link to={`/projects/${next.slug}`} className="group block sm:text-right">
+          <Link
+            to={`/projects/${next.slug}`}
+            className="group block sm:text-right"
+            onClick={() => trackEvent('case_study_click', { slug: next.slug, placement: 'detail_nav' })}
+          >
             <span className="flex items-center gap-2 font-label text-xs tracking-widest text-muted uppercase sm:justify-end">
               Next level <PixelIcon name="arrowRight" size={10} />
             </span>

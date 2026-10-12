@@ -1,7 +1,10 @@
+import { usePageView } from '../analytics'
 import PixelButton from '../components/PixelButton'
 import PixelIcon from '../components/PixelIcon'
 
 export default function NotFound() {
+  usePageView('Game Over — 404')
+
   return (
     <section className="pixel-grid-bg grid min-h-[80svh] place-items-center px-4 pt-24 pb-16 text-center">
       <title>Game Over — 404</title>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { trackEvent } from '../analytics'
 import PixelIcon from './PixelIcon'
 import { ui } from '../data/ui'
 import { useLang } from '../i18n'
@@ -134,7 +135,10 @@ export default function MusicButton({
         <Bubble role="group" aria-label="Background music">
           <button
             type="button"
-            onClick={onPromptAccept}
+            onClick={() => {
+              trackEvent('sound_prompt', { choice: 'accept' })
+              onPromptAccept()
+            }}
             className="cursor-pointer py-2 font-label text-xs tracking-widest text-text uppercase hover:text-primary"
           >
             <span aria-hidden="true" className="text-primary">
@@ -144,7 +148,10 @@ export default function MusicButton({
           </button>
           <button
             type="button"
-            onClick={onPromptDismiss}
+            onClick={() => {
+              trackEvent('sound_prompt', { choice: 'dismiss' })
+              onPromptDismiss()
+            }}
             aria-label="No thanks, keep the sound off"
             className="ml-1 grid h-8 w-8 cursor-pointer place-items-center text-muted hover:text-primary"
           >
@@ -169,7 +176,10 @@ export default function MusicButton({
 
       <button
         type="button"
-        onClick={onToggle}
+        onClick={() => {
+          trackEvent('music_toggle', { action: playing ? 'pause' : 'play' })
+          onToggle()
+        }}
         aria-label={label}
         title={label}
         // Unclipped round button, so the focus ring isn't cut off by the pixel shape.

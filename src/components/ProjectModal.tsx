@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { trackEvent } from '../analytics'
 import type { OtherProject } from '../data/projects'
 import ImageViewer from './ImageViewer'
 import PixelButton from './PixelButton'
@@ -64,7 +65,10 @@ export default function ProjectModal({ project, onClose }: Props) {
                   alt={bannerAlt}
                   natural
                   loading="eager"
-                  onOpen={() => setBannerZoomed(true)}
+                  onOpen={() => {
+                    setBannerZoomed(true)
+                    trackEvent('image_zoom', { project: project.title, image: bannerAlt })
+                  }}
                 />
               </div>
 
@@ -105,7 +109,18 @@ export default function ProjectModal({ project, onClose }: Props) {
                     {project.links.length > 0 && (
                       <div className="mt-8 flex flex-wrap gap-5">
                         {project.links.map((l) => (
-                          <PixelButton key={l.href} href={l.href} external>
+                          <PixelButton
+                            key={l.href}
+                            href={l.href}
+                            external
+                            onClick={() =>
+                              trackEvent('project_link_click', {
+                                project: project.title,
+                                link: l.label,
+                                placement: 'modal',
+                              })
+                            }
+                          >
                             {l.label} <PixelIcon name="external" size={12} />
                           </PixelButton>
                         ))}

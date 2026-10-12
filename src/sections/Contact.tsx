@@ -1,3 +1,4 @@
+import { trackEvent } from '../analytics'
 import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
 import PixelIcon, { type IconName } from '../components/PixelIcon'
@@ -32,10 +33,18 @@ export default function Contact() {
               <span>{t(profile.location.contactLine)}</span>
             </p>
             <div className="mt-10 flex flex-wrap gap-5">
-              <PixelButton href={`mailto:${contact.email}`}>
+              <PixelButton
+                href={`mailto:${contact.email}`}
+                onClick={() => trackEvent('contact_click', { channel: 'email', placement: 'contact_cta' })}
+              >
                 {t(ui.contact.sayHello)} <PixelIcon name="mail" size={12} />
               </PixelButton>
-              <PixelButton href={profile.cvUrl} variant="outline" download>
+              <PixelButton
+                href={profile.cvUrl}
+                variant="outline"
+                download
+                onClick={() => trackEvent('cv_download', { placement: 'contact' })}
+              >
                 {t(ui.hero.downloadCv)} <PixelIcon name="download" size={12} />
               </PixelButton>
             </div>
@@ -47,6 +56,7 @@ export default function Contact() {
                 <a
                   href={c.href}
                   className="block"
+                  onClick={() => trackEvent('contact_click', { channel: c.label.toLowerCase(), placement: 'card' })}
                   {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
                 >
                   <PixelCard interactive className="flex items-center gap-5 p-5">

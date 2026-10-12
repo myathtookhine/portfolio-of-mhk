@@ -1,3 +1,4 @@
+import { trackEvent } from '../analytics'
 import PixelCard from '../components/PixelCard'
 import PixelIcon from '../components/PixelIcon'
 import SectionTitle from '../components/SectionTitle'
@@ -39,6 +40,7 @@ export default function Skills() {
                         href={e.url}
                         target="_blank"
                         rel="noreferrer"
+                        onClick={() => trackEvent('certificate_click', { title: e.title, place: e.place })}
                         className="inline-flex items-center gap-2 font-medium text-text underline decoration-primary/60 decoration-2 underline-offset-4 hover:text-primary"
                       >
                         {e.title}

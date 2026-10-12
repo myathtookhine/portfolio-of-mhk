@@ -73,3 +73,41 @@ export default defineConfig([
 ])
 
 ```
+
+## Analytics (GA4)
+
+Paste the measurement ID from **GA4 › Admin › Data streams › web stream** into
+`.env.production`:
+
+```
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+Then `npm run deploy`. Rules of the setup, all in [`src/analytics.ts`](src/analytics.ts):
+
+- gtag.js loads only in production builds that have a valid ID, so `npm run dev`
+  never touches the real property — it logs every hit to the console instead.
+  Use `.env.local` for a separate test property.
+- Page views are sent by hand (`usePageView`), because gtag's own `page_view`
+  fires once per load and this is a single-page app. Route changes and the
+  correct per-case-study title are handled by the hook.
+- Event names live in one `EventName` union, so they stay consistent:
+
+| Event | Sent when | Params |
+| --- | --- | --- |
+| `cv_download` | résumé PDF download | `placement`: hero, contact |
+| `contact_click` | email, phone, LinkedIn, GitHub | `channel`, `placement` |
+| `case_study_click` | featured card or prev/next | `slug`, `placement` |
+| `project_modal_open` | "other project" card | `slug`, `title` |
+| `project_link_click` | live/external project link | `project`, `link`, `placement` |
+| `certificate_click` | certificate link in Skills | `title`, `place` |
+| `image_zoom` | screenshot opened in the viewer | `project`, `image` |
+| `nav_click` | navbar or hero CTA | `section`, `placement` |
+| `section_view` | a section is read (once per visit) | `section` |
+| `language_change` | EN ⇄ မြန်မာ switch | `language` |
+| `music_toggle`, `sound_prompt` | music button, "Sound on?" bubble | `action`, `choice` |
+
+In GA4, mark `cv_download` and `contact_click` as key events
+(**Admin › Events**) to see them as conversions, and register the params above
+as custom dimensions (**Admin › Custom definitions**) if you want to break
+reports down by them.
