@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useTheme } from '../theme'
 
 /** Grid cell size in CSS px; matches the 16px dot grid of .pixel-grid-bg. */
 const CELL = 16
@@ -24,6 +25,8 @@ const DIRS: Cell[] = [
  */
 export default function HeroSnake() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  // The snake is painted from the theme tokens, so it restarts when they change.
+  const { theme } = useTheme()
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -205,7 +208,7 @@ export default function HeroSnake() {
       area.removeEventListener('pointerup', onUp)
       area.removeEventListener('pointercancel', onLeave)
     }
-  }, [])
+  }, [theme])
 
   return <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 h-full w-full" />
 }

@@ -72,6 +72,20 @@
   }
 }
 
+/* Light theme. Dark is the default, so only the light values are listed; every
+   colour in the design is one of these tokens, so the whole page follows.
+   Unlayered on purpose: it has to win over the @theme defaults. */
+:root[data-theme='light'] {
+  --color-primary: #8a5f00;
+  --color-primary-dark: #6b4900;
+  --color-bg: #f4f1e6;
+  --color-surface: #fffdf5;
+  --color-surface-2: #eae6d8;
+  --color-line: #d5cfb9;
+  --color-text: #1b1a16;
+  --color-muted: #5d5849;
+}
+
 @layer base {
   /* Pixel-art cursors (generated from pixel grids; yellow fill, dark outline). */
   :root {
@@ -248,6 +262,16 @@
       transparent 3px,
       rgb(0 0 0 / 0.07) 3px,
       rgb(0 0 0 / 0.07) 4px
+    );
+  }
+
+  :root[data-theme='light'] .scanlines {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      rgb(0 0 0 / 0.035) 3px,
+      rgb(0 0 0 / 0.035) 4px
     );
   }
 

@@ -6,6 +6,7 @@ import { ui } from '../data/ui'
 import { useLang } from '../i18n'
 import LanguageToggle from './LanguageToggle'
 import PixelIcon from './PixelIcon'
+import ThemeToggle from './ThemeToggle'
 
 const navItems = [
   { id: 'projects', label: ui.nav.projects },
@@ -102,8 +103,9 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Language switch: always visible, next to the menu button on small screens */}
+        {/* Theme and language switches: always visible, next to the menu button on small screens */}
         <div className="flex items-center gap-2 lg:ml-3">
+          <ThemeToggle />
           <LanguageToggle />
           <button
             type="button"

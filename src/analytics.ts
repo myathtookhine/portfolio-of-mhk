@@ -29,6 +29,7 @@ type EventName =
   | 'nav_click'
   | 'section_view'
   | 'language_change'
+  | 'theme_change'
   | 'music_toggle'
   | 'sound_prompt'
 

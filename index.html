@@ -5,6 +5,25 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#171717" />
+    <script>
+      // Dark 18:00–07:00, unless the visitor picked a theme. Runs before the
+      // first paint, so the page never flashes the wrong one. Kept in step
+      // afterwards by src/components/ThemeProvider.tsx.
+      ;(function () {
+        var theme = 'dark'
+        try {
+          var saved = localStorage.getItem('theme')
+          var hour = new Date().getHours()
+          theme = saved === 'light' || saved === 'dark' ? saved : hour >= 18 || hour < 7 ? 'dark' : 'light'
+        } catch (e) {
+          /* Blocked storage: fall back to dark. */
+        }
+        document.documentElement.dataset.theme = theme
+        if (theme === 'light') {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f1e6')
+        }
+      })()
+    </script>
     <meta
       name="description"
       content="Myat Htoo Khaing is a product designer who ships in code, with 9+ years designing POS, logistics, ticketing and merchant products for web and mobile."
