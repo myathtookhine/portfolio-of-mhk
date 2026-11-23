@@ -22,7 +22,7 @@ export default function Hero() {
           </span>
         </p>
         <h1 id="hero-title" data-reveal className="hero-name mt-6 whitespace-nowrap text-text">
-          {profile.firstName} <span className="text-primary italic">{profile.lastName}</span>
+          {profile.firstName} <span className="text-accent italic">{profile.lastName}</span>
         </h1>
 
         <p data-reveal className="mt-8 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">

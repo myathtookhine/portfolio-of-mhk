@@ -79,7 +79,7 @@ function Wordmark({ onClick }: { onClick?: () => void }) {
     <Link to="/" onClick={onClick} className="block" aria-label={`${profile.name}, home`}>
       <ScrambleText
         text="MHK"
-        className="block font-label text-[22px] leading-none font-semibold text-text hover:text-primary"
+        className="block font-label text-[22px] leading-none font-semibold text-text hover:text-accent"
       />
     </Link>
   )
@@ -131,6 +131,14 @@ export default function Navbar() {
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
   const { active, progress } = useActiveSection(pathname === '/')
+  const [pastFirstScreen, setPastFirstScreen] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setPastFirstScreen(window.scrollY > window.innerHeight * 0.6)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -214,19 +222,22 @@ export default function Navbar() {
         )}
       </header>
 
-      {/* Floating call to action, bottom right; steps aside once the contact section is on screen. */}
-      {active !== 'contact' && !open && (
+      {/* Floating call to action, bottom right. It waits until the first screen has been
+          scrolled past, and steps aside once the contact section is on screen. Phones get a
+          small square so it covers as little as possible. */}
+      {pastFirstScreen && active !== 'contact' && !open && (
         <Link
           to={{ pathname: '/', hash: 'contact' }}
+          aria-label={t(ui.sections.contact)}
           onClick={() => trackEvent('nav_click', { section: 'contact', placement: 'floating_cta' })}
-          className="group fixed right-4 bottom-4 z-40 flex animate-pop items-center gap-6 bg-primary px-4 py-3 text-on-primary transition-colors hover:bg-text hover:text-bg sm:right-6 sm:bottom-6 sm:h-24 sm:w-64 sm:flex-col sm:items-stretch sm:justify-between sm:p-4"
+          className="group fixed right-4 bottom-4 z-40 grid h-12 w-12 animate-pop place-items-center bg-primary text-on-primary transition-colors hover:bg-text hover:text-bg sm:right-6 sm:bottom-6 sm:flex sm:h-24 sm:w-64 sm:flex-col sm:items-stretch sm:justify-between sm:p-4"
         >
           <Icon
             name="arrowUpRight"
             size={18}
-            className="order-last transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:order-first sm:self-end"
+            className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:self-end"
           />
-          <span className="text-sm font-medium">{t(ui.sections.contact)}</span>
+          <span className="hidden text-sm font-medium sm:block">{t(ui.sections.contact)}</span>
         </Link>
       )}
     </>

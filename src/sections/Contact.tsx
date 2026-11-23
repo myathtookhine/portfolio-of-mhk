@@ -26,7 +26,7 @@ export default function Contact() {
           {/* The statement is the heading, set large like the hero. */}
           <h2 data-reveal className="mt-6 text-[clamp(3rem,7vw,5.75rem)] leading-[0.95] tracking-[-0.025em] text-text">
             {t(ui.sections.contact)}
-            <span className="text-primary">.</span>
+            <span className="text-accent">.</span>
           </h2>
           <p data-reveal className="mt-8 max-w-md text-lg leading-8 text-muted">{t(ui.contact.intro)}</p>
           <p className="mt-5 flex max-w-md gap-3 text-sm leading-7 text-muted">
@@ -41,16 +41,19 @@ export default function Contact() {
               <li key={c.label} data-reveal>
                 <a
                   href={c.href}
-                  className="group grid grid-cols-[90px_minmax(0,1fr)_auto] items-center gap-4 border-b border-line py-5 transition-colors hover:border-text"
+                  // Phones: label above the value, so the full address fits. Wider: label | value | arrow.
+                  className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1.5 border-b border-line py-5 transition-colors hover:border-text sm:grid-cols-[90px_minmax(0,1fr)_auto] sm:gap-4"
                   onClick={() => trackEvent('contact_click', { channel: c.label.toLowerCase(), placement: 'card' })}
                   {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
                 >
-                  <span className="label text-muted">{c.label}</span>
-                  <span className="truncate text-text">{c.value}</span>
+                  <span className="label col-start-1 text-muted">{c.label}</span>
+                  <span className="col-start-1 text-text [overflow-wrap:anywhere] sm:col-start-2 sm:truncate">
+                    {c.value}
+                  </span>
                   <Icon
                     name={c.external ? 'arrowUpRight' : 'arrowRight'}
                     size={16}
-                    className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-text"
+                    className="col-start-2 row-span-2 row-start-1 text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-text sm:col-start-3 sm:row-span-1"
                   />
                 </a>
               </li>

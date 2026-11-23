@@ -71,7 +71,7 @@ export default function ProjectDetail() {
 
         <header data-reveal className="mt-10">
           <p className="label text-muted">
-            <span className="text-primary">Case study {String(index + 1).padStart(2, '0')}</span> · {project.category}
+            <span className="text-accent">Case study {String(index + 1).padStart(2, '0')}</span> · {project.category}
           </p>
           <h1 className="mt-6 text-[clamp(2.75rem,6.5vw,5.5rem)] leading-[0.95] tracking-[-0.025em] text-text">
             {project.title}
@@ -148,7 +148,7 @@ export default function ProjectDetail() {
             <ol className="max-w-3xl border-t border-line">
               {project.process.map((step, i) => (
                 <li key={step.title} className="grid grid-cols-[40px_minmax(0,1fr)] gap-4 border-b border-line py-5">
-                  <span aria-hidden="true" className="font-display text-2xl leading-none text-primary">
+                  <span aria-hidden="true" className="font-display text-2xl leading-none text-accent">
                     {i + 1}
                   </span>
                   <div>
@@ -211,7 +211,7 @@ export default function ProjectDetail() {
               <span className="label flex items-center gap-2 text-muted">
                 <Icon name="arrowLeft" size={12} /> Previous
               </span>
-              <span className="mt-3 block font-display text-3xl leading-tight text-text group-hover:text-primary sm:text-4xl">
+              <span className="mt-3 block font-display text-3xl leading-tight text-text group-hover:text-accent sm:text-4xl">
                 {prev.title}
               </span>
             </Link>
@@ -226,7 +226,7 @@ export default function ProjectDetail() {
             <span className="label flex items-center gap-2 text-muted sm:justify-end">
               Next <Icon name="arrowRight" size={12} />
             </span>
-            <span className="mt-3 block font-display text-3xl leading-tight text-text group-hover:text-primary sm:text-4xl">
+            <span className="mt-3 block font-display text-3xl leading-tight text-text group-hover:text-accent sm:text-4xl">
               {next.title}
             </span>
           </Link>

@@ -18,7 +18,7 @@ export default function Experience() {
               className="grid grid-cols-1 gap-4 border-b border-line py-9 md:grid-cols-[200px_minmax(0,1fr)] md:gap-10"
             >
               <div>
-                <p className={`label ${i === 0 ? 'text-primary' : 'text-text'}`}>{job.period}</p>
+                <p className={`label ${i === 0 ? 'text-accent' : 'text-text'}`}>{job.period}</p>
                 <p className="label mt-2 text-muted">{job.company}</p>
               </div>
               <div>

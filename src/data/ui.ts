@@ -14,7 +14,7 @@ export const ui = {
     contact: { en: 'Contact', my: 'ဆက်သွယ်ရန်' },
   },
   hero: {
-    explore: { en: 'Explore my works', my: 'လက်ရာများ ကြည့်ရန်' },
+    explore: { en: 'Explore my work', my: 'လက်ရာများ ကြည့်ရန်' },
     downloadCv: { en: 'Download CV', my: 'CV ဒေါင်းလုဒ်' },
   },
   sections: {

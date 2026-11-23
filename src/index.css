@@ -25,6 +25,8 @@
   /* One cobalt blue for both themes. */
   --color-primary: #2750ce;
   --color-primary-dark: #1d3d9e;
+  /* Blue for text: the brand blue in light, lifted in dark so small text stays readable. */
+  --color-accent: #2750ce;
   /* Text on a blue fill. */
   --color-on-primary: #ffffff;
   --color-bg: #ffffff;
@@ -75,6 +77,7 @@
    deliberately not among them: the brand orange is the same in both.
    Unlayered on purpose: it has to win over the @theme defaults. */
 :root[data-theme='dark'] {
+  --color-accent: #6d8ef0;
   --color-bg: #111214;
   --color-surface: #18191c;
   --color-surface-2: #202125;
@@ -256,6 +259,23 @@
   .group\/card:focus-within .mono-image::after,
   a:focus-visible .mono-image::after {
     opacity: 0;
+  }
+  /* Touch screens can't hover: the colour comes in shortly after each card
+     scrolls into view (or straight away when reveal-on-scroll is off). */
+  @media (hover: none) {
+    .mono-image img,
+    .mono-image::after {
+      transition-delay: 450ms;
+      transition-duration: 900ms;
+    }
+    .is-revealed .mono-image img,
+    html:not(.reveal-ready) .mono-image img {
+      filter: none;
+    }
+    .is-revealed .mono-image::after,
+    html:not(.reveal-ready) .mono-image::after {
+      opacity: 0;
+    }
   }
 
   .text-display {

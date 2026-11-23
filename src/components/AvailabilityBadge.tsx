@@ -7,10 +7,10 @@ export default function AvailabilityBadge({ className = '' }: { className?: stri
   const { t } = useLang()
   return (
     <div className={className}>
-      <span className="relative grid h-8 w-8 place-items-center text-primary" aria-hidden="true">
-        <span className="absolute inset-0 animate-radiate rounded-full border border-primary" />
-        <span className="absolute inset-0 animate-radiate rounded-full border border-primary [animation-delay:1.6s]" />
-        <span className="relative grid h-8 w-8 place-items-center rounded-full border border-primary bg-bg">
+      <span className="relative grid h-8 w-8 place-items-center text-accent" aria-hidden="true">
+        <span className="absolute inset-0 animate-radiate rounded-full border border-accent" />
+        <span className="absolute inset-0 animate-radiate rounded-full border border-accent [animation-delay:1.6s]" />
+        <span className="relative grid h-8 w-8 place-items-center rounded-full border border-accent bg-bg">
           <Icon name="briefcase" size={14} />
         </span>
       </span>

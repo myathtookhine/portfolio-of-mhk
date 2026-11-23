@@ -49,7 +49,7 @@ export default function Skills() {
                   )}
                   <p className="label mt-2 text-muted">
                     {e.place}
-                    {e.note && <span className="text-primary"> · {e.note}</span>}
+                    {e.note && <span className="text-accent"> · {e.note}</span>}
                   </p>
                 </li>
               ))}

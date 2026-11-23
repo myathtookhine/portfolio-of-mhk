@@ -20,7 +20,7 @@ export default function Strengths() {
               data-reveal
               className="grid grid-cols-1 gap-4 border-b border-line py-9 md:grid-cols-[200px_minmax(0,1fr)] md:gap-10"
             >
-              <span className="font-display text-4xl leading-none text-primary">0{i + 1}</span>
+              <span className="font-display text-4xl leading-none text-accent">0{i + 1}</span>
               <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] xl:gap-10">
                 <h3 className="text-3xl text-text sm:text-4xl">{t(s.title)}</h3>
                 <div>

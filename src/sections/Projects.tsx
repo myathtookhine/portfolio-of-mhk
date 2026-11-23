@@ -32,7 +32,7 @@ function FeaturedCard({ project, index }: { project: CaseStudy; index: number })
         <div className="flex flex-1 flex-col p-6 sm:p-7">
           {/* One line at every width: on phones the number drops "Featured", and a long category trims with an ellipsis. */}
           <div className="label flex items-center justify-between gap-4 text-muted max-sm:tracking-[0.05em]">
-            <span className="shrink-0 whitespace-nowrap text-primary">
+            <span className="shrink-0 whitespace-nowrap text-accent">
               <span className="max-sm:sr-only">Featured · </span>0{index + 1}
             </span>
             <span className="min-w-0 truncate" title={project.category}>

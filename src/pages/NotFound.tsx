@@ -11,7 +11,7 @@ export default function NotFound() {
       <div className="mx-auto w-full max-w-6xl">
         <p className="label text-muted">Error 404</p>
         <h1 className="text-display mt-6 text-text">
-          Page not <span className="text-primary italic">found</span>
+          Page not <span className="text-accent italic">found</span>
         </h1>
         <p className="mt-8 max-w-md text-lg text-muted">
           This page doesn't exist. Maybe it was never built, or it moved.
