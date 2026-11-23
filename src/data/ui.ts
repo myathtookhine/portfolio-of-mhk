@@ -6,47 +6,47 @@ import type { Localized } from '../i18n'
  */
 export const ui = {
   nav: {
-    projects: { en: 'Projects', my: 'လက်ရာများ' },
+    projects: { en: 'Projects', my: 'လက်ရာတွေ' },
     about: { en: 'About', my: 'ကျွန်တော့်အကြောင်း' },
-    strengths: { en: 'Strengths', my: 'အားသာချက်များ' },
+    strengths: { en: 'Strengths', my: 'အားသာချက်တွေ' },
     experience: { en: 'Experience', my: 'အတွေ့အကြုံ' },
-    skills: { en: 'Skills', my: 'ကျွမ်းကျင်မှု' },
+    skills: { en: 'Skills', my: 'ကျွမ်းကျင်မှုတွေ' },
     contact: { en: 'Contact', my: 'ဆက်သွယ်ရန်' },
   },
   hero: {
-    explore: { en: 'Explore my work', my: 'လက်ရာများ ကြည့်ရန်' },
-    downloadCv: { en: 'Download CV', my: 'CV ဒေါင်းလုဒ်' },
+    explore: { en: 'Explore my work', my: 'လက်ရာတွေ ကြည့်ပါ' },
+    downloadCv: { en: 'Download CV', my: 'CV ဒေါင်းလုဒ်လုပ်ပါ' },
   },
   sections: {
-    work: { en: 'Selected Work', my: 'ရွေးချယ်ထားသော လက်ရာများ' },
-    otherProjects: { en: 'Other projects', my: 'အခြား ပရောဂျက်များ' },
+    work: { en: 'Selected Work', my: 'ရွေးချယ်ထားတဲ့ လက်ရာတွေ' },
+    otherProjects: { en: 'Other projects', my: 'အခြား Project တွေ' },
     about: { en: 'About Me', my: 'ကျွန်တော့်အကြောင်း' },
-    strengths: { en: 'What I Bring', my: 'ကျွန်တော် ပေးစွမ်းနိုင်သည်များ' },
+    strengths: { en: 'What I Bring', my: 'ကျွန်တော် ပေးနိုင်တဲ့ အရာတွေ' },
     experience: { en: 'Experience', my: 'လုပ်ငန်း အတွေ့အကြုံ' },
-    skills: { en: 'Skills & Learning', my: 'ကျွမ်းကျင်မှုနှင့် သင်ယူမှု' },
-    contact: { en: "Let's Work Together", my: 'အတူတကွ လက်တွဲကြရအောင်' },
+    skills: { en: 'Skills & Learning', my: 'ကျွမ်းကျင်မှုနဲ့ လေ့လာမှုတွေ' },
+    contact: { en: "Let's Work Together", my: 'အတူ လက်တွဲကြရအောင်' },
   },
   about: {
     codeNote: {
       en: 'I work at the intersection of design and code. I design in Figma, then prototype in React and Tailwind, so ideas can be tested early and handed off to developers without surprises.',
-      my: 'ဒီဇိုင်းနဲ့ code နှစ်ခုလုံးကို ပေါင်းကူးပြီး အလုပ်လုပ်ပါတယ်။ Figma မှာ ဒီဇိုင်းလုပ်ပြီး React နဲ့ Tailwind နဲ့ prototype တည်ဆောက်တာကြောင့် idea တွေကို စောစောစမ်းသပ်နိုင်ပြီး developer တွေဆီ အခက်အခဲမရှိ လွှဲပြောင်းပေးနိုင်ပါတယ်။',
+      my: 'ဒီဇိုင်းနဲ့ Code ကြားက ချိတ်ဆက်နေရာမှာ အလုပ်လုပ်ပါတယ်။ Figma နဲ့ ဒီဇိုင်းလုပ်ပြီး React နဲ့ Tailwind နဲ့ Prototype တည်ဆောက်ပါတယ်။ ဒါကြောင့် Idea တွေကို စောစောစမ်းသပ်နိုင်သလို Developer တွေဆီလည်း အဆင်ပြေပြေ လွှဲပေးနိုင်ပါတယ်။',
     },
-    hobbies: { en: 'Outside work', my: 'ဝါသနာများ' },
+    hobbies: { en: 'Outside work', my: 'အလုပ်ပြင်ပ ဝါသနာတွေ' },
     stats: { en: 'At a glance', my: 'အကျဉ်းချုပ်' },
   },
   strengths: {
-    proof: { en: 'Proof:', my: 'သက်သေ:' },
+    proof: { en: 'Proof:', my: 'ဥပမာ:' },
   },
   projects: {
-    view: { en: 'View', my: 'ကြည့်ရန်' },
-    details: { en: 'Details', my: 'အသေးစိတ်' },
+    view: { en: 'View', my: 'ကြည့်ပါ' },
+    details: { en: 'Details', my: 'အသေးစိတ် ကြည့်ပါ' },
   },
   contact: {
     intro: {
       en: "Have a product that needs untangling, or a team that needs a hands-on design lead? I'd love to hear about it.",
-      my: 'ရှင်းလင်းဖို့ လိုနေတဲ့ product တစ်ခု၊ ဒါမှမဟုတ် လက်တွေ့ကျကျ ဦးဆောင်ပေးမယ့် design lead လိုနေတဲ့ team တစ်ခု ရှိပါသလား။ ဆက်သွယ်ပြောပြပေးပါ။',
+      my: 'ပိုကောင်းအောင် ရှင်းလင်းဖို့လိုတဲ့ Product တစ်ခု၊ ဒါမှမဟုတ် လက်တွေ့ကျကျ ဦးဆောင်ပေးမယ့် Design Lead လိုတဲ့ Team တစ်ခု ရှိနေရင် အကြောင်းလေး ပြောပြပေးပါနော်။',
     },
-    sayHello: { en: 'Say hello', my: 'ဆက်သွယ်ရန်' },
+    sayHello: { en: 'Say hello', my: 'နှုတ်ဆက်ပါ' },
   },
-  backToTop: { en: 'Back to top', my: 'အပေါ်သို့' },
+  backToTop: { en: 'Back to top', my: 'အပေါ်ကို ပြန်သွားပါ' },
 } satisfies Record<string, Localized | Record<string, Localized>>
