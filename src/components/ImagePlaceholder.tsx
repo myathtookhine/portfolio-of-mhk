@@ -1,4 +1,4 @@
-import PixelIcon from './PixelIcon'
+import Icon from './Icon'
 
 type Props = {
   /** When set, the real image is shown instead of the placeholder. */
@@ -29,7 +29,7 @@ export default function ImagePlaceholder({
         alt={alt}
         loading={loading}
         style={natural ? undefined : { aspectRatio: ratio }}
-        className={`pixel-corners block h-auto w-full object-cover ${className}`}
+        className={`block h-auto w-full object-cover ${className}`}
       />
     )
   }
@@ -39,12 +39,10 @@ export default function ImagePlaceholder({
       role="img"
       aria-label={`${alt} (image placeholder)`}
       style={{ aspectRatio: ratio }}
-      className={`pixel-corners pixel-grid-bg relative flex w-full flex-col items-center justify-center gap-3 border-[3px] border-dashed border-line bg-surface-2 text-muted ${className}`}
+      className={`relative flex w-full flex-col items-center justify-center gap-3 border border-dashed border-line bg-surface text-muted ${className}`}
     >
-      <PixelIcon name="image" size={32} className="text-primary/70" />
-      <span className="font-label text-xs tracking-widest uppercase">
-        {label ?? `IMG · ${ratio.replace(/\s/g, '')}`}
-      </span>
+      <Icon name="image" size={28} />
+      <span className="label">{label ?? `IMG · ${ratio.replace(/\s/g, '')}`}</span>
     </div>
   )
 }

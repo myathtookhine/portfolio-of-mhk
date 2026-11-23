@@ -1,80 +1,78 @@
 import { trackEvent } from '../analytics'
-import PixelButton from '../components/PixelButton'
-import PixelCard from '../components/PixelCard'
-import PixelIcon, { type IconName } from '../components/PixelIcon'
-import SectionTitle from '../components/SectionTitle'
+import Button from '../components/Button'
+import Icon from '../components/Icon'
 import { profile } from '../data/profile'
 import { ui } from '../data/ui'
 import { useLang } from '../i18n'
 
 const { contact } = profile
 
-const channels: { icon: IconName; label: string; value: string; href: string; external?: boolean }[] = [
-  { icon: 'mail', label: 'Email', value: contact.email, href: `mailto:${contact.email}` },
-  { icon: 'phone', label: 'Mobile', value: contact.phone, href: contact.phoneHref },
-  { icon: 'linkedin', label: 'LinkedIn', value: contact.linkedin, href: contact.linkedinHref, external: true },
-  { icon: 'github', label: 'GitHub', value: contact.github, href: contact.githubHref, external: true },
+const channels: { label: string; value: string; href: string; external?: boolean }[] = [
+  { label: 'Email', value: contact.email, href: `mailto:${contact.email}` },
+  { label: 'Mobile', value: contact.phone, href: contact.phoneHref },
+  { label: 'LinkedIn', value: contact.linkedin, href: contact.linkedinHref, external: true },
+  { label: 'GitHub', value: contact.github, href: contact.githubHref, external: true },
 ]
 
 export default function Contact() {
   const { t } = useLang()
   return (
-    <section id="contact" className="pixel-grid-bg bg-surface/40 py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="06" title={t(ui.sections.contact)} kicker="CONTACT" />
+    <section id="contact" className="px-5 py-20 sm:px-8 md:py-28 lg:px-14">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16">
+        <div>
+          <p data-reveal className="label flex gap-4 text-muted">
+            <span className="text-text">06</span>Contact
+          </p>
+          {/* The statement is the heading, set large like the hero. */}
+          <h2 data-reveal className="mt-6 text-[clamp(3rem,7vw,5.75rem)] leading-[0.95] tracking-[-0.025em] text-text">
+            {t(ui.sections.contact)}
+            <span className="text-primary">.</span>
+          </h2>
+          <p data-reveal className="mt-8 max-w-md text-lg leading-8 text-muted">{t(ui.contact.intro)}</p>
+          <p className="mt-5 flex max-w-md gap-3 text-sm leading-7 text-muted">
+            <Icon name="pin" size={16} className="mt-1 text-text" />
+            <span>{t(profile.location.contactLine)}</span>
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
-          <div>
-            <p className="max-w-md text-base leading-8 text-text/90 md:text-lg md:leading-9">
-              {t(ui.contact.intro)}
-            </p>
-            <p className="mt-5 flex max-w-md gap-3 text-sm leading-7 text-muted md:text-base">
-              <PixelIcon name="pin" size={14} className="mt-1.5 text-primary" />
-              <span>{t(profile.location.contactLine)}</span>
-            </p>
-            <div className="mt-10 flex flex-wrap gap-5">
-              <PixelButton
-                href={`mailto:${contact.email}`}
-                onClick={() => trackEvent('contact_click', { channel: 'email', placement: 'contact_cta' })}
-              >
-                {t(ui.contact.sayHello)} <PixelIcon name="mail" size={12} />
-              </PixelButton>
-              <PixelButton
-                href={profile.cvUrl}
-                variant="outline"
-                download
-                onClick={() => trackEvent('cv_download', { placement: 'contact' })}
-              >
-                {t(ui.hero.downloadCv)} <PixelIcon name="download" size={12} />
-              </PixelButton>
-            </div>
-          </div>
-
-          <ul className="space-y-6">
+        <div className="flex flex-col justify-end">
+          <ul className="border-t border-line">
             {channels.map((c) => (
-              <li key={c.label}>
+              <li key={c.label} data-reveal>
                 <a
                   href={c.href}
-                  className="block"
+                  className="group grid grid-cols-[90px_minmax(0,1fr)_auto] items-center gap-4 border-b border-line py-5 transition-colors hover:border-text"
                   onClick={() => trackEvent('contact_click', { channel: c.label.toLowerCase(), placement: 'card' })}
                   {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
                 >
-                  <PixelCard interactive className="flex items-center gap-5 p-5">
-                    <span className="pixel-corners grid h-12 w-12 shrink-0 place-items-center bg-primary text-bg">
-                      <PixelIcon name={c.icon} size={20} />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-label text-xs tracking-widest text-muted uppercase">{c.label}</span>
-                      <span className="mt-1 block truncate text-text group-hover/card:text-primary sm:text-base">
-                        {c.value}
-                      </span>
-                    </span>
-                    <PixelIcon name={c.external ? 'external' : 'arrowRight'} size={14} className="text-primary" />
-                  </PixelCard>
+                  <span className="label text-muted">{c.label}</span>
+                  <span className="truncate text-text">{c.value}</span>
+                  <Icon
+                    name={c.external ? 'arrowUpRight' : 'arrowRight'}
+                    size={16}
+                    className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-text"
+                  />
                 </a>
               </li>
             ))}
           </ul>
+
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Button
+              href={`mailto:${contact.email}`}
+              onClick={() => trackEvent('contact_click', { channel: 'email', placement: 'contact_cta' })}
+            >
+              {t(ui.contact.sayHello)} <Icon name="mail" size={14} />
+            </Button>
+            <Button
+              href={profile.cvUrl}
+              variant="outline"
+              download
+              onClick={() => trackEvent('cv_download', { placement: 'contact' })}
+            >
+              {t(ui.hero.downloadCv)} <Icon name="download" size={14} />
+            </Button>
+          </div>
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ type Props = {
   onClick?: () => void
 }
 
-export default function PixelButton({
+export default function Button({
   children,
   href,
   to,
@@ -23,7 +23,7 @@ export default function PixelButton({
   onClick,
 }: Props) {
   // Full width on phones, natural width from the sm breakpoint up.
-  const cls = `pixel-btn pixel-btn-${variant} w-full sm:w-auto ${className}`
+  const cls = `btn btn-${variant} w-full sm:w-auto ${className}`
 
   if (to) {
     return (

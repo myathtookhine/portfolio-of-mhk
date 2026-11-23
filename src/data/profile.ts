@@ -1,4 +1,3 @@
-import portrait from '../assets/portrait.webp'
 import type { Localized, Text } from '../i18n'
 
 /** Location and availability: shown on the portfolio only, not in the CV. */
@@ -24,7 +23,6 @@ export const profile = {
     en: "A product designer who ships in code. For 9+ years I've turned complex business needs, like restaurant POS, logistics and ticketing, into clear, responsive products, from Figma to production-ready UI.",
     my: 'Code အထိ ကိုယ်တိုင် ဒီဇိုင်းလုပ်တဲ့ Product Designer တစ်ယောက်ပါ။ ၉ နှစ်ကျော်အတွင်း စားသောက်ဆိုင် POS၊ logistics၊ ticketing စတဲ့ ရှုပ်ထွေးတဲ့ လုပ်ငန်းလိုအပ်ချက်တွေကို Figma ကနေ production-ready UI အထိ ရှင်းလင်းပြီး responsive ဖြစ်တဲ့ product တွေအဖြစ် ဖန်တီးပေးခဲ့ပါတယ်။',
   } as Localized,
-  portrait,
   about: {
     en: 'UI/UX and Product Designer with 9+ years of experience designing enterprise, logistics, POS, hotel management, and merchant solutions across web and mobile platforms. Specialized in transforming complex business requirements into intuitive user experiences through user-centered design, rapid prototyping, and scalable design systems.',
     my: 'UI/UX နဲ့ Product Designer တစ်ယောက်အနေနဲ့ ၉ နှစ်ကျော် အတွေ့အကြုံ ရှိပါတယ်။ Enterprise၊ logistics၊ POS၊ hotel management နဲ့ merchant solution တွေကို web နဲ့ mobile platform တွေအတွက် ဒီဇိုင်းလုပ်ခဲ့ပါတယ်။ ရှုပ်ထွေးတဲ့ လုပ်ငန်းလိုအပ်ချက်တွေကို user-centered design၊ rapid prototyping နဲ့ scalable design system တွေ အသုံးပြုပြီး သုံးရလွယ်ကူတဲ့ user experience တွေအဖြစ် ပြောင်းလဲပေးခြင်းမှာ ကျွမ်းကျင်ပါတယ်။',

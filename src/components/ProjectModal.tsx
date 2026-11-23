@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { trackEvent } from '../analytics'
 import type { OtherProject } from '../data/projects'
 import ImageViewer from './ImageViewer'
-import PixelButton from './PixelButton'
-import PixelIcon from './PixelIcon'
+import Button from './Button'
+import Icon from './Icon'
 import Tag from './Tag'
 import ZoomableImage from './ZoomableImage'
 
@@ -56,10 +56,9 @@ export default function ProjectModal({ project, onClose }: Props) {
       >
         {project && (
           <div className="relative m-auto w-full max-w-6xl animate-pop">
-            <div aria-hidden="true" className="pixel-corners absolute inset-0 translate-x-2 translate-y-2 bg-primary" />
-            <div className="pixel-corners pixel-border relative bg-surface">
+            <div className="relative border border-line bg-bg">
               {/* Banner: always full width on top, so screenshots stay large */}
-              <div className="bg-bg/60 p-4 sm:p-6">
+              <div className="border-b border-line bg-surface p-4 sm:p-6">
                 <ZoomableImage
                   src={project.cover}
                   alt={bannerAlt}
@@ -73,22 +72,22 @@ export default function ProjectModal({ project, onClose }: Props) {
               </div>
 
               <div className="p-6 sm:p-8 lg:p-10">
-                <p className="font-label text-xs tracking-widest text-primary uppercase">&gt; {project.category}</p>
-                <h2 id={titleId} className="mt-4 text-3xl leading-tight text-text lg:text-4xl">
+                <p className="label text-muted">{project.category}</p>
+                <h2 id={titleId} className="mt-4 text-4xl leading-tight text-text lg:text-5xl">
                   {project.title}
                 </h2>
-                <p className="mt-5 max-w-3xl text-text/90 md:text-base">{project.summary}</p>
+                <p className="mt-5 max-w-3xl text-lg text-muted">{project.summary}</p>
 
                 {/* Desktop: story on the left, facts on the right. Mobile/tablet: facts first, then the story. */}
-                <div className="mt-8 grid grid-cols-1 gap-10 border-t-2 border-dashed border-line pt-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-14">
+                <div className="mt-8 grid grid-cols-1 gap-10 border-t border-line pt-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-14">
                   <aside className="lg:order-last">
                     <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1">
                       <div>
-                        <dt className="font-label text-xs tracking-widest text-muted uppercase">Role</dt>
+                        <dt className="label text-muted">Role</dt>
                         <dd className="mt-1 text-text">{project.role}</dd>
                       </div>
                       <div>
-                        <dt className="font-label text-xs tracking-widest text-muted uppercase">Platforms</dt>
+                        <dt className="label text-muted">Platforms</dt>
                         <dd className="mt-2 flex flex-wrap gap-2">
                           {project.platforms.map((p) => (
                             <Tag key={p} tone="primary">
@@ -98,7 +97,7 @@ export default function ProjectModal({ project, onClose }: Props) {
                         </dd>
                       </div>
                       <div className="sm:col-span-2 lg:col-span-1">
-                        <dt className="font-label text-xs tracking-widest text-muted uppercase">Tags</dt>
+                        <dt className="label text-muted">Tags</dt>
                         <dd className="mt-2 flex flex-wrap gap-2">
                           {project.tags.map((t) => (
                             <Tag key={t}>{t}</Tag>
@@ -107,9 +106,9 @@ export default function ProjectModal({ project, onClose }: Props) {
                       </div>
                     </dl>
                     {project.links.length > 0 && (
-                      <div className="mt-8 flex flex-wrap gap-5">
+                      <div className="mt-8 flex flex-wrap gap-3">
                         {project.links.map((l) => (
-                          <PixelButton
+                          <Button
                             key={l.href}
                             href={l.href}
                             external
@@ -121,30 +120,30 @@ export default function ProjectModal({ project, onClose }: Props) {
                               })
                             }
                           >
-                            {l.label} <PixelIcon name="external" size={12} />
-                          </PixelButton>
+                            {l.label} <Icon name="external" size={14} />
+                          </Button>
                         ))}
                       </div>
                     )}
                   </aside>
 
                   <div>
-                    <h3 className="font-label text-sm tracking-widest text-text uppercase">
-                      <span className="text-primary">■</span> Overview
+                    <h3 className="label text-text">
+                      Overview
                     </h3>
-                    <div className="mt-4 space-y-4 text-sm leading-7 text-text/85 md:text-[15px] md:leading-8">
+                    <div className="mt-4 space-y-4 text-sm leading-7 text-muted md:text-[15px] md:leading-8">
                       {project.description.map((d) => (
                         <p key={d}>{d}</p>
                       ))}
                     </div>
 
-                    <h3 className="mt-10 font-label text-sm tracking-widest text-text uppercase">
-                      <span className="text-primary">■</span> Key features
+                    <h3 className="mt-10 label text-text">
+                      Key features
                     </h3>
                     <ul className="mt-4 space-y-3">
                       {project.highlights.map((h) => (
-                        <li key={h} className="flex gap-3 text-sm leading-7 text-text/85 md:text-[15px]">
-                          <PixelIcon name="star" size={12} className="mt-2 text-primary" />
+                        <li key={h} className="flex gap-3 text-sm leading-7 text-muted md:text-[15px]">
+                          <span aria-hidden="true" className="mt-[0.9em] h-px w-3 shrink-0 bg-muted" />
                           <span>{h}</span>
                         </li>
                       ))}
@@ -158,9 +157,9 @@ export default function ProjectModal({ project, onClose }: Props) {
                 onClick={onClose}
                 data-close
                 aria-label="Close project details"
-                className="pixel-corners absolute top-3 right-3 z-10 grid h-11 w-11 place-items-center bg-bg text-text shadow-[inset_0_0_0_3px_var(--color-line)] hover:bg-primary hover:text-bg sm:top-4 sm:right-4"
+                className="absolute top-3 right-3 z-10 grid h-10 w-10 cursor-pointer place-items-center border border-line bg-bg text-text hover:border-text hover:bg-text hover:text-bg sm:top-4 sm:right-4"
               >
-                <PixelIcon name="close" size={16} />
+                <Icon name="close" size={14} />
               </button>
             </div>
           </div>

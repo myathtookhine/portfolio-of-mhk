@@ -14,7 +14,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div className="pixel-divider" aria-hidden="true" />
       {/* Work first: recruiters see projects right after the intro. */}
       <Projects />
       <About />

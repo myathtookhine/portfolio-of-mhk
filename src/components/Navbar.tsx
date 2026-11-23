@@ -4,8 +4,10 @@ import { trackEvent } from '../analytics'
 import { profile } from '../data/profile'
 import { ui } from '../data/ui'
 import { useLang } from '../i18n'
+import AvailabilityBadge from './AvailabilityBadge'
+import Icon from './Icon'
 import LanguageToggle from './LanguageToggle'
-import PixelIcon from './PixelIcon'
+import ScrambleText from './ScrambleText'
 import ThemeToggle from './ThemeToggle'
 
 const navItems = [
@@ -17,49 +19,118 @@ const navItems = [
   { id: 'contact', label: ui.nav.contact },
 ]
 
+/**
+ * The section under the middle of the screen, and how far through it the reader
+ * is (0–1), for the index's progress line. Home page only.
+ */
 function useActiveSection(enabled: boolean) {
-  const [active, setActive] = useState('')
+  const [state, setState] = useState({ active: '', progress: 0 })
 
   useEffect(() => {
     if (!enabled) return
     // One section_view per section per visit, so a long read isn't counted twice.
     const seen = new Set<string>()
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-          setActive(entry.target.id)
-          if (!seen.has(entry.target.id)) {
-            seen.add(entry.target.id)
-            trackEvent('section_view', { section: entry.target.id })
-          }
+    let frame = 0
+
+    const measure = () => {
+      frame = 0
+      const mid = window.innerHeight * 0.5
+      let active = ''
+      let progress = 0
+      for (const { id } of navItems) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const { top, height } = el.getBoundingClientRect()
+        if (top <= mid && top + height > mid) {
+          active = id
+          progress = Math.min(1, Math.max(0, (mid - top) / height))
         }
-      },
-      { rootMargin: '-45% 0px -50% 0px' },
-    )
-    navItems.forEach(({ id }) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-    return () => observer.disconnect()
+      }
+      // The page bottom can't scroll the last section past the middle: finish it.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        active = navItems[navItems.length - 1].id
+        progress = 1
+      }
+      if (active && !seen.has(active)) {
+        seen.add(active)
+        trackEvent('section_view', { section: active })
+      }
+      setState((s) => (s.active === active && Math.abs(s.progress - progress) < 0.005 ? s : { active, progress }))
+    }
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure)
+    }
+
+    measure()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [enabled])
 
-  return enabled ? active : ''
+  return enabled ? state : { active: '', progress: 0 }
+}
+
+function Wordmark({ onClick }: { onClick?: () => void }) {
+  return (
+    <Link to="/" onClick={onClick} className="block" aria-label={`${profile.name}, home`}>
+      <ScrambleText
+        text="MHK"
+        className="block font-label text-[22px] leading-none font-semibold text-text hover:text-primary"
+      />
+    </Link>
+  )
+}
+
+function Index({ active, progress, onNavigate, placement }: {
+  active: string
+  progress: number
+  onNavigate?: () => void
+  placement: 'desktop' | 'mobile'
+}) {
+  const { t } = useLang()
+  return (
+    <ul className="border-t border-line">
+      {navItems.map(({ id, label }, i) => {
+        const current = active === id
+        return (
+          <li key={id} className="relative border-b border-line">
+            <Link
+              to={{ pathname: '/', hash: id }}
+              aria-current={current ? 'location' : undefined}
+              onClick={() => {
+                trackEvent('nav_click', { section: id, placement })
+                onNavigate?.()
+              }}
+              className={`label flex items-baseline gap-5 py-3 transition-colors hover:text-text ${
+                current || !active ? 'text-text' : 'text-muted'
+              } ${placement === 'mobile' ? 'py-4 text-[13px]' : ''}`}
+            >
+              <span className="w-5 shrink-0 text-muted">{String(i + 1).padStart(2, '0')}</span>
+              {t(label)}
+            </Link>
+            {current && (
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-px left-0 h-px bg-text"
+                style={{ width: `${Math.max(4, progress * 100)}%` }}
+              />
+            )}
+          </li>
+        )
+      })}
+    </ul>
+  )
 }
 
 export default function Navbar() {
   const { t } = useLang()
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const active = useActiveSection(pathname === '/')
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const { active, progress } = useActiveSection(pathname === '/')
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -71,85 +142,93 @@ export default function Navbar() {
   const close = () => setOpen(false)
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors ${
-        scrolled || open ? 'bg-bg/95 shadow-[0_3px_0_0_var(--color-line)] backdrop-blur' : 'bg-transparent'
-      }`}
-    >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Main">
-        <Link to="/" onClick={close} className="group flex items-center gap-3" aria-label={`${profile.name}, home`}>
-          <span className="pixel-corners grid h-9 w-9 place-items-center bg-primary font-display text-sm font-bold text-bg">
-            MHK
-          </span>
-          <span className="hidden font-label text-sm tracking-widest text-text uppercase group-hover:text-primary sm:inline">
-            {profile.name}
-          </span>
-        </Link>
+    <>
+      {/* Desktop: the index stays put on the left while the work scrolls on the right. */}
+      <aside className="hidden border-r border-line lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col lg:px-7 lg:py-7">
+        <Wordmark />
+        <nav aria-label="Main" className="mt-14">
+          <Index active={active} progress={progress} placement="desktop" />
+        </nav>
 
-        <ul className="hidden items-center gap-1 lg:ml-auto lg:flex">
-          {navItems.map(({ id, label }) => (
-            <li key={id}>
-              <Link
-                to={{ pathname: '/', hash: id }}
-                onClick={() => trackEvent('nav_click', { section: id, placement: 'desktop' })}
-                className={`block px-3 py-2 font-label text-sm tracking-wider uppercase transition-colors hover:text-primary ${
-                  active === id ? 'text-primary' : 'text-text/80'
-                }`}
-              >
-                {active === id && <span aria-hidden="true">▸ </span>}
-                {t(label)}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        {/* Theme and language switches: always visible, next to the menu button on small screens */}
-        <div className="flex items-center gap-2 lg:ml-3">
-          <ThemeToggle />
-          <LanguageToggle />
-          <button
-            type="button"
-            className="grid h-10 w-10 place-items-center text-text hover:text-primary lg:hidden"
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((o) => !o)}
+        <div className="mt-auto space-y-4">
+          <AvailabilityBadge />
+          <a
+            href={`mailto:${profile.contact.email}`}
+            onClick={() => trackEvent('contact_click', { channel: 'email', placement: 'sidebar' })}
+            className="block text-sm break-all text-muted underline decoration-line underline-offset-4 hover:text-text hover:decoration-text"
           >
-            <PixelIcon name={open ? 'close' : 'menu'} size={22} />
-          </button>
+            {profile.contact.email}
+          </a>
         </div>
-      </nav>
+      </aside>
 
-      {open && (
-        <div id="mobile-menu" className="h-[calc(100svh-4rem)] overflow-y-auto border-t-[3px] border-line bg-bg px-4 py-8 lg:hidden">
-          <ul className="flex flex-col gap-2">
-            {navItems.map(({ id, label }, i) => (
-              <li key={id}>
-                <Link
-                  to={{ pathname: '/', hash: id }}
-                  onClick={() => {
-                    trackEvent('nav_click', { section: id, placement: 'mobile' })
-                    close()
-                  }}
-                  className="flex items-center gap-4 px-2 py-3 font-display text-lg font-semibold text-text hover:bg-surface hover:text-primary"
-                >
-                  <span className="text-primary">0{i + 1}</span>
-                  {t(label)}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 border-t-[3px] border-dashed border-line pt-6 font-label text-sm text-muted">
+      {/* Desktop: theme and language chips, top right. */}
+      <div className="fixed top-6 right-8 z-40 hidden items-center gap-2 lg:flex">
+        <a
+          href={profile.cvUrl}
+          download
+          onClick={() => trackEvent('cv_download', { placement: 'nav' })}
+          className="chip label"
+        >
+          CV <Icon name="download" size={12} />
+        </a>
+        <ThemeToggle />
+        <LanguageToggle />
+      </div>
+
+      {/* Phones and tablets: a slim top bar with a full-screen index. */}
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-bg lg:hidden">
+        <div className="flex h-16 items-center justify-between gap-3 px-5 sm:px-8">
+          <Wordmark onClick={close} />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LanguageToggle />
+            <button
+              type="button"
+              className="chip w-8 cursor-pointer px-0"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen((o) => !o)}
+            >
+              <Icon name={open ? 'close' : 'menu'} size={14} />
+            </button>
+          </div>
+        </div>
+
+        {open && (
+          <nav
+            id="mobile-menu"
+            aria-label="Main"
+            className="flex h-[calc(100svh-4rem)] flex-col overflow-y-auto bg-bg px-5 pt-8 pb-10 sm:px-8"
+          >
+            <Index active={active} progress={progress} onNavigate={close} placement="mobile" />
             <a
               href={`mailto:${profile.contact.email}`}
-              className="hover:text-primary"
+              className="mt-auto pt-10 text-sm break-all text-muted hover:text-text"
               onClick={() => trackEvent('contact_click', { channel: 'email', placement: 'nav' })}
             >
               {profile.contact.email}
             </a>
-          </div>
-        </div>
+          </nav>
+        )}
+      </header>
+
+      {/* Floating call to action, bottom right; steps aside once the contact section is on screen. */}
+      {active !== 'contact' && !open && (
+        <Link
+          to={{ pathname: '/', hash: 'contact' }}
+          onClick={() => trackEvent('nav_click', { section: 'contact', placement: 'floating_cta' })}
+          className="group fixed right-4 bottom-4 z-40 flex animate-pop items-center gap-6 bg-primary px-4 py-3 text-on-primary transition-colors hover:bg-text hover:text-bg sm:right-6 sm:bottom-6 sm:h-24 sm:w-64 sm:flex-col sm:items-stretch sm:justify-between sm:p-4"
+        >
+          <Icon
+            name="arrowUpRight"
+            size={18}
+            className="order-last transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:order-first sm:self-end"
+          />
+          <span className="text-sm font-medium">{t(ui.sections.contact)}</span>
+        </Link>
       )}
-    </header>
+    </>
   )
 }

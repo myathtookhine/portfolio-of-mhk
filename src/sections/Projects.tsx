@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { trackEvent } from '../analytics'
+import Card from '../components/Card'
+import Icon from '../components/Icon'
 import ImagePlaceholder from '../components/ImagePlaceholder'
-import PixelCard from '../components/PixelCard'
-import PixelIcon from '../components/PixelIcon'
 import ProjectModal from '../components/ProjectModal'
 import SectionTitle from '../components/SectionTitle'
 import Tag from '../components/Tag'
@@ -16,31 +16,44 @@ function FeaturedCard({ project, index }: { project: CaseStudy; index: number })
   return (
     <Link
       to={`/projects/${project.slug}`}
-      className="block h-full"
+      data-reveal className="block h-full"
       aria-label={`${project.title} case study`}
       onClick={() => trackEvent('case_study_click', { slug: project.slug, placement: 'home_featured' })}
     >
-      <PixelCard interactive className="flex flex-col p-4 sm:p-5">
-        <ImagePlaceholder src={project.cover.src} alt={project.cover.alt} ratio="16 / 10" />
-        <div className="flex flex-1 flex-col px-1 pt-6 pb-2">
-          <div className="flex items-center justify-between gap-3">
-            <Tag tone="primary">{`★ Featured 0${index + 1}`}</Tag>
-            <span className="font-label text-xs tracking-wider text-muted uppercase">{project.category}</span>
+      <Card interactive className="flex flex-col">
+        <div className="mono-image overflow-hidden border-b border-line">
+          <ImagePlaceholder
+            src={project.cover.src}
+            alt={project.cover.alt}
+            ratio="16 / 10"
+            className="transition-transform duration-500 group-hover/card:scale-[1.03]"
+          />
+        </div>
+        <div className="flex flex-1 flex-col p-6 sm:p-7">
+          {/* One line at every width: on phones the number drops "Featured", and a long category trims with an ellipsis. */}
+          <div className="label flex items-center justify-between gap-4 text-muted max-sm:tracking-[0.05em]">
+            <span className="shrink-0 whitespace-nowrap text-primary">
+              <span className="max-sm:sr-only">Featured · </span>0{index + 1}
+            </span>
+            <span className="min-w-0 truncate" title={project.category}>
+              {project.category}
+            </span>
           </div>
-          <h3 className="mt-5 text-2xl text-text group-hover/card:text-primary sm:text-3xl">{project.title}</h3>
-          <p className="mt-4 flex-1 text-text/80">{project.summary}</p>
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <h3 className="mt-5 text-3xl text-text sm:text-4xl">{project.title}</h3>
+          <p className="mt-4 flex-1 text-muted">{project.summary}</p>
+          <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5">
             <div className="flex flex-wrap gap-2">
               {project.platforms.map((p) => (
                 <Tag key={p}>{p}</Tag>
               ))}
             </div>
-            <span className="flex items-center gap-2 font-display text-sm font-semibold text-primary">
-              {t(ui.projects.view)} <PixelIcon name="arrowRight" size={12} />
+            <span className="label flex items-center gap-2 text-text">
+              {t(ui.projects.view)}
+              <Icon name="arrowRight" size={14} className="transition-transform group-hover/card:translate-x-1" />
             </span>
           </div>
         </div>
-      </PixelCard>
+      </Card>
     </Link>
   )
 }
@@ -48,35 +61,35 @@ function FeaturedCard({ project, index }: { project: CaseStudy; index: number })
 function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () => void }) {
   const { t } = useLang()
   return (
-    <PixelCard
-      interactive
-      shadow={false}
-      className="flex flex-col p-4 group-hover/card:shadow-[inset_0_0_0_3px_var(--color-primary)]"
-    >
+    <Card interactive className="flex flex-col">
       {/* Wide dashboard screenshots: crop from the top-left to keep the logo and navigation in view. */}
-      <ImagePlaceholder
-        src={project.cover}
-        alt={`${project.title} preview`}
-        ratio="16 / 9"
-        className="object-top-left"
-      />
-      <div className="flex flex-1 flex-col px-1 pt-5 pb-1">
-        <span className="font-label text-xs tracking-wider text-primary uppercase">{project.category}</span>
-        <h3 className="mt-3 text-xl leading-snug text-text group-hover/card:text-primary">
+      <div className="mono-image overflow-hidden border-b border-line">
+        <ImagePlaceholder
+          src={project.cover}
+          alt={`${project.title} preview`}
+          ratio="16 / 9"
+          className="object-top-left transition-transform duration-500 group-hover/card:scale-[1.03]"
+        />
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <span className="label block truncate text-muted max-sm:tracking-[0.05em]" title={project.category}>
+          {project.category}
+        </span>
+        <h3 className="mt-3 text-2xl leading-tight text-text">
           {/* The ::after stretches this button over the whole card, so any click on the card opens the modal. */}
           <button
             type="button"
             onClick={onOpen}
             aria-haspopup="dialog"
-            className="cursor-pointer text-left after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:shadow-[inset_0_0_0_3px_var(--color-primary)]"
+            className="cursor-pointer text-left after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-primary"
           >
             {project.title}
           </button>
         </h3>
-        <p className="mt-3 flex-1 text-sm leading-7 text-muted">{project.summary}</p>
-        <div className="mt-5 flex flex-wrap items-center gap-5">
-          <span aria-hidden="true" className="flex items-center gap-2 font-display text-sm font-semibold text-text group-hover/card:text-primary">
-            {t(ui.projects.details)} <PixelIcon name="arrowRight" size={10} />
+        <p className="mt-3 flex-1 text-sm leading-6 text-muted">{project.summary}</p>
+        <div className="mt-5 flex flex-wrap items-center gap-5 border-t border-line pt-4">
+          <span aria-hidden="true" className="label flex items-center gap-2 text-text">
+            {t(ui.projects.details)} <Icon name="arrowRight" size={12} />
           </span>
           {project.links.map((l) => (
             // Sits above the stretched button so it stays independently clickable.
@@ -88,14 +101,14 @@ function ProjectCard({ project, onOpen }: { project: OtherProject; onOpen: () =>
               onClick={() =>
                 trackEvent('project_link_click', { project: project.title, link: l.label, placement: 'card' })
               }
-              className="relative z-10 flex items-center gap-2 font-display text-sm font-semibold text-muted hover:text-primary"
+              className="label relative z-10 flex items-center gap-2 text-muted hover:text-text"
             >
-              {l.label} <PixelIcon name="external" size={10} />
+              {l.label} <Icon name="external" size={12} />
             </a>
           ))}
         </div>
       </div>
-    </PixelCard>
+    </Card>
   )
 }
 
@@ -105,22 +118,23 @@ export default function Projects() {
   const openProject = otherProjects.find((p) => p.slug === openSlug) ?? null
 
   return (
-    <section id="projects" className="bg-surface/40 py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionTitle index="01" title={t(ui.sections.work)} kicker="INVENTORY" />
+    <section id="projects" className="border-b border-line px-5 py-20 sm:px-8 md:py-28 lg:px-14">
+      <div className="mx-auto max-w-6xl">
+        <SectionTitle index="01" title={t(ui.sections.work)} kicker="Work" />
 
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {caseStudies.map((p, i) => (
             <FeaturedCard key={p.slug} project={p} index={i} />
           ))}
         </div>
 
-        <h3 className="mt-20 mb-8 font-label text-lg tracking-widest text-text uppercase">
-          <span className="text-primary">■</span> {t(ui.sections.otherProjects)}
+        <h3 data-reveal className="label mt-20 mb-6 flex items-center gap-4 text-text">
+          {t(ui.sections.otherProjects)}
+          <span className="h-px flex-1 bg-line" aria-hidden="true" />
         </h3>
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {otherProjects.map((p) => (
-            <li key={p.slug}>
+            <li key={p.slug} data-reveal>
               <ProjectCard
                 project={p}
                 onOpen={() => {

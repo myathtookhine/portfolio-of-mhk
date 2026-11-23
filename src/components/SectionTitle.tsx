@@ -1,22 +1,19 @@
 type Props = {
   index: string
   title: string
-  kicker?: string
+  /** Short English label beside the number, e.g. "Work". */
+  kicker: string
 }
 
+/** Numbered section heading: a small index label, then a large serif title. */
 export default function SectionTitle({ index, title, kicker }: Props) {
   return (
-    <div className="mb-10 md:mb-14">
-      <p className="font-label text-sm tracking-widest text-primary uppercase">
-        &gt; {index}. {kicker ?? title.replace(/\s+/g, '_')}
+    <div data-reveal className="mb-12 grid grid-cols-1 gap-5 md:mb-16 md:grid-cols-[200px_minmax(0,1fr)] md:gap-10">
+      <p className="label flex gap-4 pt-2 text-muted">
+        <span className="text-text">{index}</span>
+        {kicker}
       </p>
-      <h2 className="text-section mt-3 text-text">{title}</h2>
-      <div className="mt-5 flex gap-1" aria-hidden="true">
-        <span className="h-2 w-16 bg-primary" />
-        <span className="h-2 w-2 bg-primary" />
-        <span className="h-2 w-2 bg-primary/50" />
-        <span className="h-2 w-2 bg-primary/25" />
-      </div>
+      <h2 className="text-section text-text">{title}</h2>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 /* Myanmar fonts (Unicode). unicode-range limits them to Myanmar characters, so
-   English words keep Inter / Space Grotesk, and the files only download when
+   English words keep Instrument Serif / Inter, and the files only download when
    Myanmar text is on the page. The 100–900 weight range stops the browser from
    faking bold on these single-weight fonts. */
 @font-face {
@@ -19,83 +19,73 @@
   unicode-range: U+1000-109F, U+A9E0-A9FF, U+AA60-AA7F;
 }
 
+/* Editorial theme: white page, ink text, hairline rules, one orange accent.
+   Light is the default here; the dark values follow below. */
 @theme {
-  /* One amber-orange for both themes. */
-  --color-primary: #d26b08;
-  --color-primary-dark: #a85606;
-  --color-bg: #171717;
-  --color-surface: #202020;
-  --color-surface-2: #262626;
-  --color-line: #2e2e2e;
-  --color-text: #f5f5f0;
-  --color-muted: #a3a3a3;
+  /* One cobalt blue for both themes. */
+  --color-primary: #2750ce;
+  --color-primary-dark: #1d3d9e;
+  /* Text on a blue fill. */
+  --color-on-primary: #ffffff;
+  --color-bg: #ffffff;
+  --color-surface: #f6f6f4;
+  --color-surface-2: #eeeeeb;
+  --color-line: #e1e1e3;
+  --color-text: #262933;
+  --color-muted: #6b6e78;
 
-  /* Headings, labels and buttons: Space Grotesk (Myanmar: Myanmar Square).
+  /* Headings: Instrument Serif (Myanmar: Myanmar Square).
+     Labels, nav and buttons: Inter in small caps-style uppercase.
      Body copy: Inter (Myanmar: Aka-01). */
-  --font-display: 'Myanmar Square', 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-label: 'Myanmar Square', 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Myanmar Square', 'Instrument Serif', 'Times New Roman', Georgia, serif;
+  --font-label: 'Myanmar Square', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Aka01', 'Inter', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
 
-  --animate-blink: blink 1s steps(1) infinite;
-  --animate-float: float 3s steps(4) infinite;
-  --animate-pop: pop 180ms steps(4) both;
-  --animate-loadbar: loadbar 1s steps(20) forwards;
+  --animate-pop: pop 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-rise: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-radiate: radiate 3.2s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
 
-  @keyframes loadbar {
+  @keyframes radiate {
     from {
-      width: 0;
+      opacity: 0.55;
+      transform: scale(1);
     }
     to {
-      width: 100%;
+      opacity: 0;
+      transform: scale(2.4);
     }
   }
 
   @keyframes pop {
     from {
       opacity: 0;
-      transform: scale(0.94) translateY(12px);
+      transform: translateY(12px);
     }
   }
-
-  @keyframes blink {
-    50% {
+  @keyframes rise {
+    from {
       opacity: 0;
-    }
-  }
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-6px);
+      transform: translateY(24px);
     }
   }
 }
 
-/* Light theme. Dark is the default, so only the light values are listed; every
-   colour in the design is one of these tokens, so the whole page follows. The
-   primary is deliberately not among them: the brand orange is the same in both.
+/* Dark theme: the same editorial layout, inverted. Every colour in the design
+   is one of these tokens, so the whole page follows. The primary is
+   deliberately not among them: the brand orange is the same in both.
    Unlayered on purpose: it has to win over the @theme defaults. */
-:root[data-theme='light'] {
-  --color-bg: #f4f1e6;
-  --color-surface: #fffdf5;
-  --color-surface-2: #eae6d8;
-  --color-line: #d5cfb9;
-  --color-text: #1b1a16;
-  --color-muted: #5d5849;
+:root[data-theme='dark'] {
+  --color-bg: #111214;
+  --color-surface: #18191c;
+  --color-surface-2: #202125;
+  --color-line: #2c2e33;
+  --color-text: #ecebe8;
+  --color-muted: #9b9da5;
 }
 
 @layer base {
-  /* Pixel-art cursors (generated from pixel grids; primary fill, dark outline). */
-  :root {
-  --cursor-default: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2226%22%20viewBox%3D%220%200%209%2013%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%223%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%224%22%20width%3D%223%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%225%22%20width%3D%224%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%226%22%20width%3D%225%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%227%22%20width%3D%226%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%228%22%20width%3D%223%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%224%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%229%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2210%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2210%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2211%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2212%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3C%2Fsvg%3E") 0 0, default;
-  --cursor-pointer: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2226%22%20viewBox%3D%220%200%2012%2013%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%224%22%20y%3D%220%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%223%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%223%22%20width%3D%223%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%224%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%229%22%20y%3D%224%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%225%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%225%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%229%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%226%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%226%22%20width%3D%227%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%227%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%227%22%20width%3D%227%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%228%22%20width%3D%229%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%229%22%20width%3D%228%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2210%22%20width%3D%227%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2211%22%20width%3D%226%22%20height%3D%221%22%20fill%3D%22%23D26B08%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2212%22%20width%3D%228%22%20height%3D%221%22%20fill%3D%22%23171717%22%2F%3E%3C%2Fsvg%3E") 9 0, pointer;
-  }
-
+  /* No CSS smooth scrolling: src/smoothScroll.ts eases wheel and anchor scrolling itself. */
   html {
-    cursor: var(--cursor-default);
-    scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     background: var(--color-bg);
   }
@@ -106,25 +96,18 @@
     color: var(--color-text);
     font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.65;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  a,
-  button,
-  summary,
-  [role='button'] {
-    cursor: var(--cursor-pointer);
-  }
-
   ::selection {
     background: var(--color-primary);
-    color: var(--color-bg);
+    color: var(--color-on-primary);
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-primary);
+    outline: 2px solid var(--color-primary);
     outline-offset: 3px;
   }
 
@@ -132,186 +115,183 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    line-height: 1.15;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
   }
 
-  /* chunky pixel scrollbar */
   ::-webkit-scrollbar {
-    width: 12px;
+    width: 8px;
   }
   ::-webkit-scrollbar-track {
     background: var(--color-bg);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-primary);
-    border: 3px solid var(--color-bg);
+    background: var(--color-line);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
   }
 }
 
 @layer components {
-  /* Stepped corner frame: clip-path cuts the corners into 4px pixel steps. */
-  .pixel-corners {
-    clip-path: polygon(
-      0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
-      calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
-      100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px),
-      calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%,
-      8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px)
-    );
+  /* Small uppercase label: nav, kickers, table headers, captions. */
+  .label {
+    font-family: var(--font-label);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
-  /* Hard border drawn with inset shadows, so it survives clip-path. */
-  .pixel-border {
-    box-shadow:
-      inset 0 0 0 3px var(--color-line);
-  }
-  .pixel-border-primary {
-    box-shadow:
-      inset 0 0 0 3px var(--color-primary);
-  }
-
-  /* Hard offset shadow, no blur. */
-  .pixel-shadow {
-    box-shadow:
-      inset 0 0 0 3px var(--color-line),
-      6px 6px 0 0 var(--color-primary);
-  }
-
-  .pixel-btn {
+  .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    padding: 0.9rem 1.4rem;
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 600;
+    min-height: 2.75rem;
+    padding: 0.7rem 1.1rem;
+    font-family: var(--font-label);
+    font-size: 12px;
+    font-weight: 500;
     line-height: 1;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    cursor: var(--cursor-pointer);
-    transition:
-      transform 80ms steps(2),
-      box-shadow 80ms steps(2),
-      background-color 80ms steps(2);
     white-space: nowrap;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease;
   }
-  .pixel-btn-primary {
+  .btn-primary {
     background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+  .btn-primary:hover {
+    background: var(--color-text);
+    border-color: var(--color-text);
     color: var(--color-bg);
-    box-shadow:
-      inset -4px -4px 0 0 var(--color-primary-dark),
-      4px 4px 0 0 var(--color-text);
   }
-  .pixel-btn-primary:hover {
-    transform: translate(-2px, -2px);
-    box-shadow:
-      inset -4px -4px 0 0 var(--color-primary-dark),
-      6px 6px 0 0 var(--color-text);
-  }
-  .pixel-btn-outline {
+  .btn-outline {
     background: transparent;
+    border-color: var(--color-text);
     color: var(--color-text);
-    box-shadow:
-      inset 0 0 0 3px var(--color-text),
-      4px 4px 0 0 var(--color-primary);
   }
-  .pixel-btn-outline:hover {
-    transform: translate(-2px, -2px);
-    color: var(--color-primary);
-    box-shadow:
-      inset 0 0 0 3px var(--color-primary),
-      6px 6px 0 0 var(--color-primary);
-  }
-  .pixel-btn:active {
-    transform: translate(4px, 4px);
-    box-shadow: inset 0 0 0 3px var(--color-primary);
+  .btn-outline:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
   }
 
-  .pixel-grid-bg {
-    background-image: radial-gradient(
-      color-mix(in srgb, var(--color-text) 9%, transparent) 1px,
-      transparent 1px
-    );
-    background-size: 16px 16px;
+  /* Boxed nav chip, as in the top-right utility bar. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 2rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    color: var(--color-text);
+    transition:
+      background-color 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease;
+  }
+  .chip:hover {
+    border-color: var(--color-text);
+  }
+  .chip[aria-pressed='true'],
+  .chip-active {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-bg);
   }
 
-  /* Checkerboard strip used as a pixel divider. */
-  .pixel-divider {
-    height: 8px;
-    background-image:
-      linear-gradient(45deg, var(--color-primary) 25%, transparent 25%),
-      linear-gradient(-45deg, var(--color-primary) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, var(--color-primary) 75%),
-      linear-gradient(-45deg, transparent 75%, var(--color-primary) 75%);
-    background-size: 8px 8px;
-    background-position: 0 0, 0 4px, 4px -4px, -4px 0;
-    opacity: 0.35;
+  /* The hero name on one line at every width: sized from the hero column's width
+     (container query units), so "Myat Htoo Khaing" always just fits. */
+  .hero-name {
+    font-size: clamp(1.75rem, 16.4cqi, 11rem);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
   }
 
-  .scanlines {
-    pointer-events: none;
-    position: fixed;
+  /* Availability line: smaller than the other labels. */
+  .badge-text {
+    font-size: 10px;
+  }
+
+  /* Homepage project images: black and white until hovered or focused. */
+  .mono-image img {
+    filter: grayscale(1) contrast(1.05);
+    transition:
+      filter 600ms ease,
+      transform 600ms ease;
+  }
+  /* A transparent brand-blue layer over the black-and-white image: multiplied,
+     whites turn soft blue and darks stay dark, for a blue monotone. */
+  .mono-image {
+    position: relative;
+  }
+  .mono-image::after {
+    content: '';
+    position: absolute;
     inset: 0;
-    z-index: 60;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 3px,
-      rgb(0 0 0 / 0.07) 3px,
-      rgb(0 0 0 / 0.07) 4px
-    );
+    background: var(--color-primary);
+    opacity: 0.45;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    transition: opacity 600ms ease;
   }
-
-  :root[data-theme='light'] .scanlines {
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 3px,
-      rgb(0 0 0 / 0.035) 3px,
-      rgb(0 0 0 / 0.035) 4px
-    );
+  .group\/card:hover .mono-image img,
+  .group\/card:focus-within .mono-image img,
+  a:focus-visible .mono-image img {
+    filter: none;
   }
-
-  /* A 16×16 pixel-art circle: stair-stepped edges instead of a smooth curve. */
-  .pixel-circle {
-    clip-path: polygon(
-      31.25% 0, 68.75% 0, 68.75% 6.25%, 81.25% 6.25%, 81.25% 12.5%, 87.5% 12.5%, 87.5% 18.75%,
-      93.75% 18.75%, 93.75% 31.25%, 100% 31.25%, 100% 68.75%, 93.75% 68.75%, 93.75% 81.25%,
-      87.5% 81.25%, 87.5% 87.5%, 81.25% 87.5%, 81.25% 93.75%, 68.75% 93.75%, 68.75% 100%,
-      31.25% 100%, 31.25% 93.75%, 18.75% 93.75%, 18.75% 87.5%, 12.5% 87.5%, 12.5% 81.25%,
-      6.25% 81.25%, 6.25% 68.75%, 0 68.75%, 0 31.25%, 6.25% 31.25%, 6.25% 18.75%, 12.5% 18.75%,
-      12.5% 12.5%, 18.75% 12.5%, 18.75% 6.25%, 31.25% 6.25%
-    );
-  }
-
-  .pixelated {
-    image-rendering: pixelated;
-    shape-rendering: crispEdges;
+  .group\/card:hover .mono-image::after,
+  .group\/card:focus-within .mono-image::after,
+  a:focus-visible .mono-image::after {
+    opacity: 0;
   }
 
   .text-display {
-    font-size: clamp(2.6rem, 7.5vw, 5rem);
-    line-height: 1.02;
-    letter-spacing: -0.035em;
+    font-size: clamp(3.25rem, 8.5vw, 7rem);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
   }
   .text-section {
-    font-size: clamp(1.9rem, 4.2vw, 2.75rem);
-    letter-spacing: -0.025em;
+    font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
   }
 }
 
-/* Tailwind's cursor utilities use the system cursors; point them at the pixel ones.
-   Same layer, later in the file, so these win over the generated utilities. */
-@layer utilities {
-  .cursor-pointer {
-    cursor: var(--cursor-pointer);
-  }
-  .cursor-default {
-    cursor: var(--cursor-default);
-  }
+/* Reveal on scroll. The hidden start state only applies once the script has
+   armed it (html.reveal-ready), so without JavaScript nothing stays invisible.
+   src/components/RevealManager.tsx adds .is-revealed as each element scrolls in. */
+html.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.reveal-ready [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Custom cursor (see src/components/CustomCursor.tsx): the system pointer is
+   hidden only while the custom one is active, i.e. on a mouse and with no
+   modal open (modals sit in the top layer, above the custom cursor). */
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none !important;
 }
 
 /* Myanmar mode (<html lang="my">). Myanmar script stacks marks above and below
@@ -324,24 +304,29 @@
   line-height: 1.55;
   letter-spacing: normal;
 }
-:root:lang(my) :is(.font-label, [class*='tracking-']) {
+/* Myanmar Square is a heavier face than the serif: keep section titles in proportion. */
+:root:lang(my) .text-section {
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+}
+:root:lang(my) :is(.label, .btn, .font-label, [class*='tracking-']) {
   letter-spacing: normal;
 }
 /* Myanmar glyphs read smaller than Latin at the same size: lift the tiny labels. */
-:root:lang(my) :is(.text-xs, .text-\[11px\]) {
+:root:lang(my) :is(.label, .text-xs, .text-\[11px\]) {
   font-size: 0.8125rem;
 }
 :root:lang(my) :is([class*='leading-7'], [class*='leading-8'], [class*='leading-9']) {
   line-height: 2;
 }
 /* The hero name stays in English and keeps its tight display leading. */
-:root:lang(my) .text-display {
-  line-height: 1.02;
+:root:lang(my) :is(.text-display, .hero-name) {
+  line-height: 0.92;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  html.reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
   }
   *,
   *::before,
