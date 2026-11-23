@@ -4,7 +4,7 @@ import { DARK_FROM_HOUR, DARK_UNTIL_HOUR, ThemeContext, scheduledTheme, type The
 
 const STORAGE_KEY = 'theme'
 /** Browser chrome on mobile, kept in step with the page background. */
-const META_COLOR: Record<Theme, string> = { dark: '#171717', light: '#f4f1e6' }
+const META_COLOR: Record<Theme, string> = { dark: '#111214', light: '#ffffff' }
 
 function readSaved(): Theme | null {
   try {

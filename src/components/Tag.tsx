@@ -3,10 +3,8 @@ type Props = { children: string; tone?: 'default' | 'primary' }
 export default function Tag({ children, tone = 'default' }: Props) {
   return (
     <span
-      className={`inline-block px-2.5 py-1 font-label text-xs tracking-wide uppercase ${
-        tone === 'primary'
-          ? 'bg-primary text-bg'
-          : 'text-text shadow-[inset_0_0_0_2px_var(--color-line)]'
+      className={`label inline-block border px-2 py-1 ${
+        tone === 'primary' ? 'border-primary bg-primary text-on-primary' : 'border-line text-muted'
       }`}
     >
       {children}

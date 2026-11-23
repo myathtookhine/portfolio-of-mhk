@@ -1,32 +1,29 @@
 import { trackEvent } from '../analytics'
 import { profile } from '../data/profile'
-import PixelIcon from './PixelIcon'
 import { ui } from '../data/ui'
 import { useLang } from '../i18n'
 
 export default function Footer() {
   const { t } = useLang()
   return (
-    <footer className="border-t-[3px] border-line">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-8 text-center font-label text-xs tracking-widest text-muted uppercase sm:flex-row sm:px-6 sm:text-left">
+    <footer className="border-t border-line">
+      <div className="label flex flex-col gap-4 px-5 py-8 text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-14">
         <p>
           © {new Date().getFullYear()} {profile.name}
         </p>
-        <p>
-          Designed &amp; built with <span className="text-primary">■</span> React + Tailwind
-        </p>
+        <p>Designed &amp; built with React + Tailwind</p>
         <div className="flex items-center gap-6">
           <a
             href={profile.contact.linkedinHref}
             target="_blank"
             rel="noreferrer"
             onClick={() => trackEvent('contact_click', { channel: 'linkedin', placement: 'footer' })}
-            className="flex items-center gap-2 hover:text-primary"
+            className="hover:text-text"
           >
-            <PixelIcon name="linkedin" size={12} /> LinkedIn
+            LinkedIn
           </a>
-          <a href="#top" className="hover:text-primary">
-            ▲ {t(ui.backToTop)}
+          <a href="#top" className="hover:text-text">
+            {t(ui.backToTop)} ↑
           </a>
         </div>
       </div>

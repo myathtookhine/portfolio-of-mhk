@@ -1,5 +1,5 @@
 import ImagePlaceholder from './ImagePlaceholder'
-import PixelIcon from './PixelIcon'
+import Icon from './Icon'
 
 type Props = {
   src?: string
@@ -25,9 +25,9 @@ export default function ZoomableImage({ onOpen, ...image }: Props) {
       <ImagePlaceholder {...image} />
       <span
         aria-hidden="true"
-        className="pixel-corners pointer-events-none absolute right-3 bottom-3 grid h-10 w-10 place-items-center bg-bg/85 text-primary shadow-[inset_0_0_0_2px_var(--color-line)] transition-transform duration-100 group-hover:scale-110 group-focus-visible:scale-110"
+        className="pointer-events-none absolute right-3 bottom-3 grid h-9 w-9 place-items-center border border-line bg-bg/90 text-text transition-colors group-hover:border-text group-focus-visible:border-text"
       >
-        <PixelIcon name="zoomIn" size={18} />
+        <Icon name="zoomIn" size={16} />
       </span>
     </button>
   )

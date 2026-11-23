@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
-import PixelIcon, { type IconName } from './PixelIcon'
+import Icon, { type IconName } from './Icon'
 
 export type ViewerImage = { src: string; alt: string }
 
@@ -271,7 +271,7 @@ function ViewerBody({ image, position, onClose }: BodyProps) {
   return (
     <div className="flex h-full min-h-0 flex-col">
       {/* Toolbar */}
-      <div className="flex shrink-0 items-center justify-between gap-3 border-b-[3px] border-line px-3 py-2 sm:px-5">
+      <div className="flex shrink-0 items-center justify-between gap-3 border-b border-line px-3 py-2 sm:px-5">
         <span className="font-label text-xs tracking-widest text-muted uppercase">{position ?? 'Image'}</span>
         <div className="flex items-center gap-1 sm:gap-2">
           <ToolButton icon="zoomOut" label="Zoom out" onClick={zoomOut} disabled={!zoomed} />
@@ -280,7 +280,7 @@ function ViewerBody({ image, position, onClose }: BodyProps) {
           </span>
           <ToolButton icon="zoomIn" label="Zoom in" onClick={zoomIn} disabled={view.s >= MAX_ZOOM} />
           <ToolButton icon="fit" label="Fit to screen" onClick={fit} disabled={!zoomed} />
-          <span aria-hidden="true" className="mx-1 h-6 w-0.75 bg-line" />
+          <span aria-hidden="true" className="mx-1 h-6 w-px bg-line" />
           <ToolButton icon="close" label="Close image viewer" onClick={onClose} dataClose />
         </div>
       </div>
@@ -318,7 +318,7 @@ function ViewerBody({ image, position, onClose }: BodyProps) {
       </div>
 
       {/* Caption + hint */}
-      <div className="shrink-0 border-t-[3px] border-line px-4 py-3 text-center sm:px-6">
+      <div className="shrink-0 border-t border-line px-4 py-3 text-center sm:px-6">
         <p className="mx-auto max-w-3xl truncate text-sm text-text/85">{image.alt}</p>
         <p className="mt-1 hidden font-label text-xs tracking-widest text-muted uppercase sm:block">
           Scroll to zoom · Drag to move · Double-click to toggle · Esc to close
@@ -354,9 +354,9 @@ function ToolButton({
       aria-label={label}
       title={label}
       data-close={dataClose || undefined}
-      className="grid h-10 w-10 cursor-pointer place-items-center text-text hover:bg-surface hover:text-primary aria-disabled:cursor-(--cursor-default) aria-disabled:text-muted/40 aria-disabled:hover:bg-transparent"
+      className="grid h-10 w-10 cursor-pointer place-items-center text-text hover:bg-surface aria-disabled:cursor-default aria-disabled:text-muted/40 aria-disabled:hover:bg-transparent"
     >
-      <PixelIcon name={icon} size={icon === 'close' || icon === 'fit' ? 14 : 18} />
+      <Icon name={icon} size={icon === 'close' || icon === 'fit' ? 14 : 18} />
     </button>
   )
 }
@@ -367,11 +367,11 @@ function NavButton({ side, onClick }: { side: 'left' | 'right'; onClick: () => v
       type="button"
       onClick={onClick}
       aria-label={side === 'left' ? 'Previous image' : 'Next image'}
-      className={`pixel-corners absolute top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 cursor-pointer place-items-center bg-bg/85 text-text shadow-[inset_0_0_0_3px_var(--color-line)] hover:bg-primary hover:text-bg ${
+      className={`absolute top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 cursor-pointer place-items-center border border-line bg-bg/90 text-text hover:border-text hover:bg-text hover:text-bg ${
         side === 'left' ? 'left-2 sm:left-4' : 'right-2 sm:right-4'
       }`}
     >
-      <PixelIcon name={side === 'left' ? 'arrowLeft' : 'arrowRight'} size={16} />
+      <Icon name={side === 'left' ? 'arrowLeft' : 'arrowRight'} size={16} />
     </button>
   )
 }

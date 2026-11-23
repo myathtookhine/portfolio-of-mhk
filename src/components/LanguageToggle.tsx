@@ -10,8 +10,8 @@ const OPTIONS: { value: Lang; label: string; name: string }[] = [
 export default function LanguageToggle() {
   const { lang, setLang } = useLang()
   return (
-    <div role="group" aria-label="Language" className="flex shadow-[inset_0_0_0_2px_var(--color-line)]">
-      {OPTIONS.map((o) => (
+    <div role="group" aria-label="Language" className="flex">
+      {OPTIONS.map((o, i) => (
         <button
           key={o.value}
           type="button"
@@ -22,9 +22,7 @@ export default function LanguageToggle() {
             if (o.value !== lang) trackEvent('language_change', { language: o.value })
             setLang(o.value)
           }}
-          className={`px-2.5 py-1.5 text-xs font-semibold transition-colors ${
-            lang === o.value ? 'bg-primary text-bg' : 'text-text/80 hover:text-primary'
-          } ${o.value === 'en' ? 'font-label tracking-wider' : 'font-display'}`}
+          className={`chip label cursor-pointer ${i > 0 ? '-ml-px' : ''} ${o.value === 'my' ? 'tracking-normal normal-case' : ''}`}
         >
           {o.label}
         </button>

@@ -1,132 +1,68 @@
-import { useEffect, useState } from 'react'
 import { trackEvent } from '../analytics'
-import HeroSnake from '../components/HeroSnake'
-import ImagePlaceholder from '../components/ImagePlaceholder'
-import PixelButton from '../components/PixelButton'
-import PixelIcon from '../components/PixelIcon'
+import AvailabilityBadge from '../components/AvailabilityBadge'
+import Button from '../components/Button'
+import Icon from '../components/Icon'
 import { profile } from '../data/profile'
 import { ui } from '../data/ui'
 import { useLang } from '../i18n'
 
-function useTyped(text: string, speed = 70) {
-  const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  const [count, setCount] = useState(reduced ? text.length : 0)
-
-  useEffect(() => {
-    if (reduced) return
-    const id = window.setInterval(() => {
-      setCount((c) => {
-        if (c >= text.length) {
-          window.clearInterval(id)
-          return c
-        }
-        return c + 1
-      })
-    }, speed)
-    return () => window.clearInterval(id)
-  }, [text, speed, reduced])
-
-  return text.slice(0, count)
-}
-
 export default function Hero() {
   const { t } = useLang()
-  const typed = useTyped(profile.title)
 
   return (
-    <section className="pixel-grid-bg relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28" aria-labelledby="hero-title">
-      <HeroSnake />
-      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 sm:px-6 md:grid-cols-[1.25fr_1fr] md:gap-10">
-        <div>
-          <div className="flex flex-wrap gap-3">
-            <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-primary uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
-              <span className="h-2 w-2 animate-blink bg-primary" aria-hidden="true" />
-              {t(profile.location.badge)}
-            </p>
-            {/* <p className="inline-flex items-center gap-2 bg-surface px-3 py-1.5 font-label text-xs tracking-widest text-text uppercase shadow-[inset_0_0_0_2px_var(--color-line)]">
-              <PixelIcon name="pin" size={12} className="text-primary" />
-              {t(profile.location.city)} · {profile.location.timezone}
-            </p> */}
-          </div>
+    <section className="border-b border-line px-5 pt-28 pb-14 sm:px-8 lg:px-14 lg:pt-32 lg:pb-16" aria-labelledby="hero-title">
+      {/* A size container, so the name can scale to the column's width and stay on one line. */}
+      <div className="@container mx-auto max-w-6xl">
+        <AvailabilityBadge className="mb-10 lg:hidden" />
 
-          <h1 id="hero-title" className="text-display mt-7 text-text">
-            {profile.firstName}
-            <br />
-            <span className="text-primary">{profile.lastName}</span>
-          </h1>
-
-          <p className="mt-6 min-h-[1.5em] font-display text-xl leading-snug font-semibold text-text sm:text-2xl">
-            <span className="sr-only">{profile.title}</span>
-            <span aria-hidden="true">
-              &gt; {typed}
-              <span className="animate-blink text-primary">▮</span>
-            </span>
-          </p>
-
-          <p className="mt-6 max-w-xl text-muted">
-            {t(profile.valueProp)}
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-5">
-            <PixelButton
-              href="#projects"
-              onClick={() => trackEvent('nav_click', { section: 'projects', placement: 'hero_cta' })}
-            >
-              {t(ui.hero.explore)} <PixelIcon name="arrowDown" size={12} />
-            </PixelButton>
-            <PixelButton
-              href={profile.cvUrl}
-              variant="outline"
-              download
-              onClick={() => trackEvent('cv_download', { placement: 'hero' })}
-            >
-              {t(ui.hero.downloadCv)} <PixelIcon name="download" size={12} />
-            </PixelButton>
-          </div>
-
-          <dl className="mt-14 grid max-w-xl grid-cols-3 gap-3">
-            {profile.stats.map((s) => (
-              <div key={s.value} className="bg-surface p-3 shadow-[inset_0_0_0_2px_var(--color-line)] sm:p-4">
-                <dt className="sr-only">{t(s.label)}</dt>
-                <dd className="font-display text-3xl font-bold text-primary sm:text-4xl">{s.value}</dd>
-                <dd className="mt-2 font-label text-xs leading-snug tracking-wide text-muted uppercase sm:text-xs">
-                  {t(s.label)}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div className="relative mx-auto w-full max-w-sm md:max-w-none">
-          <div aria-hidden="true" className="pixel-corners absolute inset-0 translate-x-3 translate-y-3 bg-primary" />
-          <div className="pixel-corners relative bg-surface p-3 shadow-[inset_0_0_0_3px_var(--color-line)]">
-            <div className="mb-3 flex items-center justify-between px-1 font-label text-xs tracking-widest text-muted uppercase">
-              <span>player_01</span>
-              {/* <span className="flex gap-1.5" aria-hidden="true">
-                <span className="h-2.5 w-2.5 bg-primary" />
-                <span className="h-2.5 w-2.5 bg-line" />
-                <span className="h-2.5 w-2.5 bg-line" />
-              </span> */}
-            </div>
-            <ImagePlaceholder
-              src={profile.portrait}
-              alt={`Pixel-art portrait of ${profile.name}`}
-              ratio="4 / 5"
-              loading="eager"
-              className="pixel-grid-bg bg-surface-2"
-            />
-            <div className="mt-3 flex items-center justify-between px-1 font-label text-xs tracking-widest uppercase">
-              <span className="text-text">LVL 9+ Designer</span>
-              <span className="text-primary">HP ■■■■■</span>
-            </div>
-          </div>
-          <span
-            aria-hidden="true"
-            className="absolute -top-5 -left-5 hidden animate-float font-display text-2xl text-primary md:block"
-          >
-            ✦
+        <p data-reveal className="label flex flex-wrap justify-between gap-x-6 gap-y-2 text-muted">
+          <span>{profile.title}</span>
+          <span>
+            {t(profile.location.city)} · {profile.location.timezone}
           </span>
+        </p>
+        <h1 id="hero-title" data-reveal className="hero-name mt-6 whitespace-nowrap text-text">
+          {profile.firstName} <span className="text-primary italic">{profile.lastName}</span>
+        </h1>
+
+        <p data-reveal className="mt-8 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
+          {t(profile.valueProp)}
+        </p>
+
+        <div data-reveal className="mt-10 flex flex-wrap gap-3">
+          <Button
+            href="#projects"
+            onClick={() => trackEvent('nav_click', { section: 'projects', placement: 'hero_cta' })}
+          >
+            {t(ui.hero.explore)} <Icon name="arrowDown" size={14} />
+          </Button>
+          <Button
+            href={profile.cvUrl}
+            variant="outline"
+            download
+            onClick={() => trackEvent('cv_download', { placement: 'hero' })}
+          >
+            {t(ui.hero.downloadCv)} <Icon name="download" size={14} />
+          </Button>
         </div>
+
+        {/* Key numbers, set out like a data table */}
+        <dl data-reveal className="mt-16 grid grid-cols-1 border-t border-line sm:grid-cols-3">
+          {profile.stats.map((s, i) => (
+            <div
+              key={s.value}
+              className={`flex items-baseline gap-5 border-b border-line py-5 sm:block sm:border-b-0 sm:py-6 ${
+                i > 0 ? 'sm:border-l sm:pl-6' : ''
+              }`}
+            >
+              <dt className="sr-only">{t(s.label)}</dt>
+              <dd className="w-20 shrink-0 font-display text-5xl leading-none text-text sm:w-auto sm:text-6xl">
+                {s.value}
+              </dd>
+              <dd className="label mt-3 text-muted">{t(s.label)}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   )

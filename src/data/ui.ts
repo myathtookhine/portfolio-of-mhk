@@ -31,8 +31,8 @@ export const ui = {
       en: 'I work at the intersection of design and code. I design in Figma, then prototype in React and Tailwind, so ideas can be tested early and handed off to developers without surprises.',
       my: 'ဒီဇိုင်းနဲ့ code နှစ်ခုလုံးကို ပေါင်းကူးပြီး အလုပ်လုပ်ပါတယ်။ Figma မှာ ဒီဇိုင်းလုပ်ပြီး React နဲ့ Tailwind နဲ့ prototype တည်ဆောက်တာကြောင့် idea တွေကို စောစောစမ်းသပ်နိုင်ပြီး developer တွေဆီ အခက်အခဲမရှိ လွှဲပြောင်းပေးနိုင်ပါတယ်။',
     },
-    hobbies: { en: 'Side quests', my: 'ဝါသနာများ' },
-    stats: { en: 'Character stats', my: 'ကိုယ်ရေး အချက်အလက်' },
+    hobbies: { en: 'Outside work', my: 'ဝါသနာများ' },
+    stats: { en: 'At a glance', my: 'အကျဉ်းချုပ်' },
   },
   strengths: {
     proof: { en: 'Proof:', my: 'သက်သေ:' },
@@ -48,8 +48,5 @@ export const ui = {
     },
     sayHello: { en: 'Say hello', my: 'ဆက်သွယ်ရန်' },
   },
-  loading: { en: 'Loading', my: 'ဖွင့်နေသည်' },
-  soundOn: { en: 'Sound on?', my: 'အသံ ဖွင့်မလား?' },
-  nowPlaying: { en: 'Now playing · lofi', my: 'သီချင်း ဖွင့်နေပါတယ်' },
   backToTop: { en: 'Back to top', my: 'အပေါ်သို့' },
 } satisfies Record<string, Localized | Record<string, Localized>>
