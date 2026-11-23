@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/portfolio-of-mhk/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#171717" />
+    <meta name="theme-color" content="#ffffff" />
     <script>
       // Dark 18:00–07:00, unless the visitor picked a theme. Runs before the
       // first paint, so the page never flashes the wrong one. Kept in step
@@ -19,8 +19,12 @@
           /* Blocked storage: fall back to dark. */
         }
         document.documentElement.dataset.theme = theme
-        if (theme === 'light') {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f1e6')
+        // Arm reveal-on-scroll before the first paint, so nothing flashes in and out.
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('reveal-ready')
+        }
+        if (theme === 'dark') {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#111214')
         }
       })()
     </script>
@@ -48,14 +52,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <title>Myat Htoo Khaing — Product Designer</title>
-    <script type="module" crossorigin src="/portfolio-of-mhk/assets/index-CJqFdmyq.js"></script>
-    <link rel="stylesheet" crossorigin href="/portfolio-of-mhk/assets/index-DRc16bZk.css">
+    <script type="module" crossorigin src="/portfolio-of-mhk/assets/index-BFhb-z0n.js"></script>
+    <link rel="stylesheet" crossorigin href="/portfolio-of-mhk/assets/index-DmZxUmHz.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>

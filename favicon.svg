@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" shape-rendering="crispEdges"><rect width="8" height="8" fill="#171717"/><path fill="#FAB304" d="M1 1h1v6H1zM2 2h1v1H2zM3 3h1v1H3zM4 2h1v1H4zM5 1h1v6H5z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- "MHK" drawn as strokes (no font needed), white on the brand blue. -->
+  <rect width="32" height="32" fill="#2750CE"/>
+  <path fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linejoin="miter" d="M3.2 21.5V10.5l3.4 6.2 3.4-6.2v11M13 10.5v11M19 10.5v11M13 16h6M22.2 10.5v11M28.8 10.5l-5.4 5.6M24.6 14.9l4.4 6.6"/>
+</svg>
